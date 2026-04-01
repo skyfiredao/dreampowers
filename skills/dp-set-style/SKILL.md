@@ -30,6 +30,7 @@ description: Use when defining work-level prose style before worldbuilding, afte
 - [ ] 展示候选作者列表，询问用户是否有参考偏好
 - [ ] 执行七维风格问卷（逐题提问，每题一条消息）
 - [ ] 生成风格档案（`style.md`）
+- [ ] 若类型为情色且 `dp-chapter-adult` 已安装，将情色风格描述写入 `adult.md` 的"写作风格"部分
 - [ ] 用户确认风格档案
 - [ ] 存储至 `docs/dreampowers/tracking/style.md`
 - [ ] 过渡到 `dp-set-concept`
@@ -173,6 +174,17 @@ description: Use when defining work-level prose style before worldbuilding, afte
 - 指令数量 5-10 条，太少不够约束，太多记不住
 - 指令之间不能矛盾
 
+### 情色类型特殊处理
+
+当故事蓝本的类型为**情色**或包含情色元素，且 `dp-chapter-adult` 已安装时：
+
+1. 风格问卷照常执行七维问卷，生成全局 `style.md`（用于非成人场景的常规写作）
+2. 情色参考作者的匹配结果和用户选择**不写入 `style.md`**
+3. 额外为情色场景生成专属风格描述，写入 `adult.md` 的"写作风格"部分
+4. `adult.md` 中的写作风格仅在成人场景中生效，不污染全局风格档案
+
+如果 `adult.md` 尚不存在（用户尚未执行 `dp-set-outline`），将风格描述暂存，在 `dp-set-outline` 创建 `adult.md` 时自动填入。如果 `adult.md` 已存在，直接写入其"写作风格"部分。
+
 **范例段落的要求：**
 - 按照七维参数和可执行指令写一段 200 字左右的示范
 - 场景自选，但应与故事蓝本中的类型相关
@@ -205,7 +217,7 @@ description: Use when defining work-level prose style before worldbuilding, afte
 1. **诊断**：确认是本章个例问题还是作品级风格需要修改
 2. **章节级调整**：在该章的 `tuning.md` 中写入风格微调指令（如"本章语言收着点，比喻减半，对话比重提升到 60%"）。tuning.md 优先级高于 style.md，写入即生效
 3. **作品级修改**：如果多章都出现同样的风格问题，说明 style.md 本身需要修订。此时重新运行本技能的问卷流程，更新 `tracking/style.md`。更新后提示用户已完成章节中哪些可能受影响，由用户决定是否重写
-4. **重写**：调整完成后，重新进入 `dp-chapter-draft` 即可。Pre-Draft Gate 会读取更新后的风格栈（style.md + tuning.md）
+4. **重写**：调整完成后，调用 `skill("dp-chapter-draft")` 即可。Pre-Draft Gate 会读取更新后的风格栈（style.md + tuning.md）
 
 ## 存储路径
 
@@ -318,6 +330,7 @@ docs/dreampowers/
 | 被引用 | `dp-chapter-draft` | Pre-Draft Gate 读取 `style.md`，作为写作基准 |
 | 被引用 | `dp-review-consistency` | 散文修订以 `style.md` 为风格基线 |
 | 被引用 | `dp-set-outline` | 创建章节工作区时添加 `style.md` 符号链接 |
+| 协作 | `dp-chapter-adult` | 情色类型的风格结果写入 `adult.md` 的"写作风格"部分，不写入 `style.md` |
 
 ## 反模式
 
@@ -349,7 +362,7 @@ digraph set_style {
     gen [label="生成 style.md\n风格档案"];
     confirm [label="用户确认？" shape=diamond];
     save [label="存储至\ntracking/style.md"];
-    transition [label="调用 dp-set-concept" shape=doublecircle];
+    transition [label="调用 skill(\"dp-set-concept\")" shape=doublecircle];
 
     read -> match;
     match -> show;

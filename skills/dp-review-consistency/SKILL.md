@@ -43,7 +43,7 @@ description: Use when verifying narrative consistency across chapters, revising 
 
 ## 检查维度
 
-共八个维度，全部必检。
+共九个维度，全部必检（第九维度仅在章节工作区存在 `adult.md` 时执行，否则标记 N/A）。
 
 ### 一、时间线连续性
 
@@ -121,6 +121,20 @@ description: Use when verifying narrative consistency across chapters, revising 
 - 本章 `spec.md` 标记为"新引入"的概念，是否确实在文中首次出现？（避免元数据与实际写作脱节）
 - 本章 `spec.md` 标记为"深化"的概念，是否确实在文中得到了深化展开？
 
+### 九、成人场景一致性
+
+**仅在章节工作区存在 `adult.md` 时执行。** 有 `adult.md` = 本章含成人场景。
+
+对照章节工作区的 `adult.md`（可能是符号链接到 `tracking/adult.md` 或章节级独立文件）逐项检查：
+
+- **分级一致性**：场景描写是否符合 `adult.md` 中指定的默认分级（软性/硬核）？如果用户确认了分级切换，切换是否合理？
+- **感官偏好**：重点描写的感官通道是否与 `adult.md` 中的偏好一致？弱化/省略的通道是否确实被弱化？
+- **角色偏好**：视角展开是否与 `adult.md` 中的角色偏好一致？角色语言和行为是否符合偏好要求？
+- **场景节奏**：铺垫、升温、高潮、余韵四阶段的节奏分配是否与 `adult.md` 中的偏好匹配？
+- **个人禁区**：是否出现了 `adult.md` 中明确标注的禁区元素？（零容忍，出现即 FAIL）
+- **写作风格**：成人场景的写作风格是否与 `adult.md` 中的风格描述一致？
+- **章节频率**：回溯检查成人场景的出现频率，是否与 `adult.md` 中定义的频率预期大致吻合？
+
 ---
 
 ## 检查清单模板
@@ -147,6 +161,7 @@ description: Use when verifying narrative consistency across chapters, revising 
 | 揭示一致性 | PASS/FAIL | N |
 | 伏笔完整性 | PASS/FAIL | N |
 | 概念隔离一致性 | PASS/FAIL | N |
+| 成人场景一致性 | PASS/FAIL/N/A | N |
 
 ## 总体判定：PASS / FAIL
 
@@ -205,6 +220,7 @@ CC = 已引入伏笔数 - 已回收伏笔数
 | `dp-set-concept` | 世界规则、角色设定（`docs/dreampowers/set/`） |
 | `dp-set-outline` | 揭示时间表、铁律约束、计划的情节事件、章节目标 |
 | 章节文件夹 | `docs/dreampowers/chapters/chapter-NNN/` 中的符号链接和 `spec.md` |
+| `dp-chapter-adult` | 章节工作区的 `adult.md`（存在时读取，用于第九维度检查） |
 
 ### 产出
 
@@ -226,6 +242,7 @@ CC = 已引入伏笔数 - 已回收伏笔数
 | 世界规则被情节需要临时推翻 | 世界观一致性崩溃 |
 | CC > 3 | 叙事债务失控，读者已无法追踪伏笔 |
 | 三个以上维度同时 FAIL | 稿件整体连续性存在结构性问题 |
+| 成人场景出现 `adult.md` 个人禁区元素 | 零容忍，立即 FAIL 并停止 |
 
 出现 Red Flag 后：
 1. 停止写作，不再进入下一章。
@@ -245,12 +262,13 @@ CC = 已引入伏笔数 - 已回收伏笔数
 5. 遍历 `docs/dreampowers/tracking/` 目录下的伏笔文件（`thread-*.md`）
 6. 读取大纲（`docs/dreampowers/outlines/`）
 7. 读取章节文件夹（`docs/dreampowers/chapters/chapter-NNN/` 中的符号链接和 `spec.md`）
-8. 按八个维度逐一检查，每个维度独立判定 PASS/FAIL
-9. 计算 Claremont Coefficient
-10. 检测超期伏笔
-11. 填写检查清单模板，生成连续性报告
-12. 将报告保存到 `docs/dreampowers/chapters/chapter-NNN/review.md`
-13. 如有任何维度 FAIL 或触发 Red Flag，明确告知写作者
+8. 如果章节工作区存在 `adult.md`，读取其内容（用于第九维度检查）
+9. 按九个维度逐一检查，每个维度独立判定 PASS/FAIL（第九维度无 `adult.md` 时标记 N/A）
+10. 计算 Claremont Coefficient
+11. 检测超期伏笔
+12. 填写检查清单模板，生成连续性报告
+13. 将报告保存到 `docs/dreampowers/chapters/chapter-NNN/review.md`
+14. 如有任何维度 FAIL 或触发 Red Flag，明确告知写作者
 
 ```dot
 digraph continuity_checking {
@@ -261,6 +279,7 @@ digraph continuity_checking {
     read_ch [label="读取目标章节 +\n回溯全部已有章节"];
     read_set [label="读取世界观设定\n+ 揭示时间表"];
     read_tracking [label="遍历伏笔文件\n(tracking/thread-*.md)\n+ 大纲 + 章节文件夹"];
+    read_adult [label="读取 adult.md\n(章节工作区存在时)" shape=box style="rounded,dashed"];
 
     d1 [label="维度一：时间线连续性"];
     d2 [label="维度二：空间连续性"];
@@ -270,6 +289,7 @@ digraph continuity_checking {
     d6 [label="维度六：揭示一致性"];
     d7 [label="维度七：伏笔完整性"];
     d8 [label="维度八：概念隔离一致性"];
+    d9 [label="维度九：成人场景一致性\n(无 adult.md 则 N/A)" style="rounded,dashed"];
 
     cc [label="计算 Claremont Coefficient\n+ 超期伏笔检测"];
     report [label="生成连续性报告\n保存至 chapters/chapter-NNN/review.md"];
@@ -280,10 +300,10 @@ digraph continuity_checking {
     redflag [label="触发 Red Flag？" shape=diamond];
     stop [label="STOP\n禁止进入下一章\n等待修正" shape=octagon];
 
-    start -> read_ch -> read_set -> read_tracking;
-    read_tracking -> d1 -> d2 -> d3 -> d4 -> d5 -> d6 -> d7;
-    d7 -> d8;
-    d8 -> cc -> report;
+    start -> read_ch -> read_set -> read_tracking -> read_adult;
+    read_adult -> d1 -> d2 -> d3 -> d4 -> d5 -> d6 -> d7;
+    d7 -> d8 -> d9;
+    d9 -> cc -> report;
     report -> redflag;
     redflag -> stop [label="是"];
     redflag -> check_result [label="否"];
@@ -299,7 +319,7 @@ digraph continuity_checking {
 
 - **全部 PASS**：在外部审阅闭环中，与 `dp-review-reader` 的结果合并判定。如果两份报告均无问题，章节可进入用户确认环节。
 - **存在 FAIL（无 Red Flag）**：在外部审阅闭环中，问题与 `dp-review-reader` 的问题汇总后统一修改，修改后重新进入闭环（最多 3 次）。独立调用时，修正后重新运行本技能的连续性检查。
-- **触发 Red Flag**：禁止进入下一章，必须先修正问题并重新通过全部八个维度检查。
+- **触发 Red Flag**：禁止进入下一章，必须先修正问题并重新通过全部九个维度检查。
 
 ---
 
@@ -373,7 +393,7 @@ digraph continuity_checking {
 1. **删 > 改 > 加**。能删就不改，能改就不加。好的修订让文字变少。如果修订后比原文更长，你在扩写
 2. **每句话必须挣得它的位置**。推进情节、揭示角色、建立氛围，三项至少占一项，否则删
 3. **杀死你的挚爱 (Kill Your Darlings)**。写得漂亮但不服务故事的句子就是装饰品，让读者欣赏文字而非沉浸故事。删掉它
-4. **修订不是重写**。改动一个场景 50% 以上的文字，停下来。回到 `dp-chapter-draft` 走完整流程
+4. **修订不是重写**。改动一个场景 50% 以上的文字，停下来。回到 `skill("dp-chapter-draft")` 走完整流程
 
 ## 修订流程
 
@@ -755,7 +775,7 @@ digraph deai_flow {
 
 ## 最终连续性通检
 
-九项清单全部 PASS 后，运行本技能第一部分（连续性检查）对**全部章节**做一次完整通检。不是逐章，而是将所有章节作为整体跑完八个维度。
+九项清单全部 PASS 后，运行本技能第一部分（连续性检查）对**全部章节**做一次完整通检。不是逐章，而是将所有章节作为整体跑完九个维度。
 
 目的：捕捉逐章检查时不易发现、全书尺度才暴露的不一致。
 
@@ -776,9 +796,9 @@ digraph finishing_review {
     checklist_pass [label="全部 PASS？" shape=diamond];
     fix_issues [label="修正问题\n（回到对应技能处理）"];
     final_cc [label="运行连续性检查（第一部分）\n全书最终通检"];
-    cc_pass [label="八维度全部 PASS？" shape=diamond];
+    cc_pass [label="九维度全部 PASS？" shape=diamond];
     fix_cc [label="修正连续性问题\n重新通检"];
-    done [label="终检通过\n稿件可交付\n使用 dp-tool-version 打 tag" shape=doublecircle];
+    done [label="终检通过\n稿件可交付\n调用 skill(\"dp-tool-version\") 打 tag" shape=doublecircle];
     start -> checklist;
     checklist -> checklist_pass;
     checklist_pass -> final_cc [label="全部 PASS"];
@@ -804,6 +824,7 @@ digraph finishing_review {
 | 协作 | `dp-review-reader` | 同在外部审阅闭环中，dp-review-reader 先执行，本技能后执行。两份报告的问题汇总后统一修改 |
 | 协作 | `dp-character-style` | 角色风格是红线。修订和去AI味不得抹杀角色的说话方式和个性。某些角色可能就是会用"文雅"的词汇，这不是AI味 |
 | 协作 | `dp-chapter-direct` | 节奏意图是红线。不得为了"顺滑"而磨平故意设计的节奏起伏。去AI味后需检查节奏意图是否受损 |
+| 协作 | `dp-chapter-adult` | 章节工作区有 `adult.md` 时，读取其内容作为第九维度（成人场景一致性）的检查基准 |
 | 下游 | `dp-tool-version` | 终检通过后，使用 `dp-tool-version` 创建 git tag 标记最终版本 |
 
 ---
@@ -845,7 +866,7 @@ digraph finishing_review {
 - **最后一章写完就宣布完稿** ❌ 写完 ≠ 完稿，未检查的稿件里一定藏着遗忘的伏笔
 - **跳过最终通检"逐章都检查过了"** ❌ 全书尺度的不一致只有全书通检才能发现
 - **某项 FAIL 但"问题不大"就放行** ❌ 每一项 FAIL 都是读者会注意到的裂缝
-- **终检时修改正文内容** ❌ 改内容必须回到 `dp-chapter-draft` 重新审查
+- **终检时修改正文内容** ❌ 改内容必须回到 `skill("dp-chapter-draft")` 重新审查
 - **续作伏笔不记录就留着** ❌ 未记录的 `deferred` 伏笔等于遗忘的伏笔
 - **设定和正文有出入但"以正文为准"** ❌ 正文为准可以，但设定文档必须同步更新至 `docs/dreampowers/set/`
 
@@ -860,14 +881,14 @@ digraph finishing_review {
 | 修订后文字比原文长 | 你在扩写。回到"删 > 改 > 加"原则 |
 | 修订后句子长度趋于一致 | 你在磨平节奏。检查 `dp-chapter-direct` 意图 |
 | 修订后角色对话变"文雅" | 你在抹杀角色风格。对照 `dp-character-style` 还原 |
-| 单个段落改动超过 50% | 你在重写。回到 `dp-chapter-draft` |
+| 单个段落改动超过 50% | 你在重写。回到 `skill("dp-chapter-draft")` |
 | 同一段修订超过 3 次仍不满意 | 问题可能不在文字层面，检查结构或内容 |
 
 ## AI味检测 STOP 信号
 
 | 信号 | 说明 |
 |------|------|
-| AI味浓度评分 ≥8 | 文本需要大面积重写，不是修补能解决的。回到 `dp-chapter-draft` |
+| AI味浓度评分 ≥8 | 文本需要大面积重写，不是修补能解决的。回到 `skill("dp-chapter-draft")` |
 | 替换后浓度反而上升 | 替换方案本身带有AI味。停下来，换思路 |
 | 单章红色标记 >15 处 | 问题是系统性的，逐条修补效率太低。考虑重写关键段落 |
 | 去味后角色风格消失 | 过度矫正。对照 `dp-character-style` 还原角色个性 |
@@ -885,7 +906,7 @@ digraph finishing_review {
 | 存在 `output/chapter-NNN-TBD.md` 文件 | TBD 章节未经用户人工审阅 |
 | `deferred-threads.md` 条目无法与伏笔文件对应 | 续作伏笔管理混乱 |
 
-出现 Red Flag 后：暂停当前流程，判断问题层级。structure-level 交回 `dp-chapter-draft`，prose-level 回到修订第一遍重新开始。AI味浓度 ≥8 或红色标记 >15 的章节，直接交回 `dp-chapter-draft` 重新起草。终检 Red Flag 不得标记稿件为完成，修正问题后重新检查。
+出现 Red Flag 后：暂停当前流程，判断问题层级。structure-level 交回 `skill("dp-chapter-draft")`，prose-level 回到修订第一遍重新开始。AI味浓度 ≥8 或红色标记 >15 的章节，直接交回 `skill("dp-chapter-draft")` 重新起草。终检 Red Flag 不得标记稿件为完成，修正问题后重新检查。
 
 ---
 
@@ -897,4 +918,4 @@ digraph finishing_review {
 
 **散文修订终止**：章节经过三遍通读法修订，冗余已删除，动词已强化，重复已消除，节奏自然流畅，开头结尾经过锤炼，角色风格和节奏意图均未受损。文字变少了，但读起来更好了。同时，AI味检测五步流程已完成，AI味浓度评分降至 3 分以下，所有红色标记已处理，黄色标记累积不超过 3 处，量化指标全部达标，技术语域污染已清除，角色风格和节奏意图未受损。文字读起来不再有机器味，但保留了该有的文采。
 
-**终检终止**：九项检查清单全部 PASS，全书最终连续性通检八维度全部 PASS。稿件可交付。使用 `dp-tool-version` 创建 git tag 标记最终版本。
+**终检终止**：九项检查清单全部 PASS，全书最终连续性通检九维度全部 PASS。稿件可交付。调用 `skill("dp-tool-version")` 创建 git tag 标记最终版本。

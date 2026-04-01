@@ -25,7 +25,7 @@ description: Use when writing chapter text, drafting scenes, or producing manusc
 ## Pre-Draft Gate（写作前强制检查）
 
 <HARD-GATE>
-以下十二项检查全部通过后才允许开始写作。跳过任何一项等于盲写。
+以下十三项检查全部通过后才允许开始写作。跳过任何一项等于盲写。
 </HARD-GATE>
 
 <HARD-GATE>
@@ -51,6 +51,7 @@ description: Use when writing chapter text, drafting scenes, or producing manusc
 10. **读取作者调优**：检查章节工作区中是否存在 `tuning.md`。若存在，读取其中的调优指令。调优指令的优先级：铁律 > tuning.md > style.md > 大纲默认设定 > spec.md 中的一般指导
 11. **语域转换**：以上步骤加载的概念文件、角色卡、spec.md 等都是技术参考资料，其语言是结构化的、百科式的。写作时只提取事实，不复制其语言风格。所有设定信息进入正文时，必须经过 style.md 定义的文笔过滤——用角色的感知、动作、对话来承载，不用资料的术语和句式。概念文件说"灵力基于经脉循环系统"，正文应该写角色感受到灵力流动，而不是复述定义
 12. **汇总写作约束**：把以上结果整理成一份"本章写作指令卡"，明确列出必须做和禁止做的事
+13. **加载成人场景技能**：检查章节工作区中是否存在 `adult.md`。若存在（有链接 = 本章含成人场景），调用 `skill("dp-chapter-adult")` 加载成人场景写作方法论，并读取 `adult.md` 中的尺度、禁区、风格偏好作为本章写作约束
 
 全部通过后，输出一段确认摘要，然后开始写作。
 
@@ -58,7 +59,7 @@ description: Use when writing chapter text, drafting scenes, or producing manusc
 
 调用本技能后，将以下清单写入 todowrite，逐项执行：
 
-- [ ] 完成 Pre-Draft Gate 全部十二项检查
+- [ ] 完成 Pre-Draft Gate 全部十三项检查
 - [ ] 确定本章写作重点（场景数量、字数目标、情绪弧线）
 - [ ] 逐场景写作（每个场景独立完成，场景间保持过渡）
 - [ ] 自检：世界观揭示是否符合铁律
@@ -69,11 +70,11 @@ description: Use when writing chapter text, drafting scenes, or producing manusc
 - [ ] 保存草稿到章节工作区 `chapters/chapter-NNN/draft.md`
 - [ ] 保存终稿到 `output/chapter-NNN.md`
 - [ ] 更新伏笔文件（`docs/dreampowers/tracking/thread-*.md`）
-- [ ] 调用 `dp-chapter-summary` 生成本章摘要
+- [ ] 调用 `skill("dp-chapter-summary")` 生成本章摘要
 
 ## 场景写作指引
 
-场景级别的精细控制由 `dp-chapter-direct` 负责。这里只给出章节层面的指引：
+场景级别的精细控制需调用 `skill("dp-chapter-direct")`。这里只给出章节层面的指引：
 
 **开场**：直接进入动作或对话。不要从天气、环境描写开头，除非天气本身是情节元素（暴风雨阻断退路、浓雾隐藏敌人）。第一句话就应该让读者进入场景。
 
@@ -242,7 +243,7 @@ digraph external_review_loop {
 
     three_stage_pass [label="三阶段审查通过"];
     reader [label="读者审阅\n(dp-review-reader)\n四维度评分"];
-    consistency [label="一致性审阅\n(dp-review-consistency)\n八维度检查 + 写作风格检查"];
+    consistency [label="一致性审阅\n(dp-review-consistency)\n九维度检查 + 写作风格检查"];
     has_issue [label="存在问题？" shape=diamond];
     fix [label="根据两份报告修改章节"];
     count [label="第几轮？" shape=diamond];
@@ -263,8 +264,8 @@ digraph external_review_loop {
 
 ### 审阅规则
 
-1. **读者审阅先行**：调用 `dp-review-reader`，获取四维度评分和问题标记
-2. **一致性审阅跟进**：调用 `dp-review-consistency` 第一部分（连续性检查）+ 第二部分（散文修订与AI味检测，含对照 `style.md` 的写作风格检查）
+1. **读者审阅先行**：调用 `skill("dp-review-reader")`，获取四维度评分和问题标记
+2. **一致性审阅跟进**：调用 `skill("dp-review-consistency")` 第一部分（连续性检查）+ 第二部分（散文修订与AI味检测，含对照 `style.md` 的写作风格检查）
 3. **合并修改**：将两份报告的问题汇总，统一修改章节。修改后不需要重新走三阶段审查（三阶段已通过，外部审阅只做体验和一致性层面的调整）
 4. **循环上限 3 次**：修改后重新进入读者审阅 → 一致性审阅。总循环最多 3 次
 5. **3 次后仍有问题**：终稿保存至 `output/chapter-NNN-TBD.md`，`review_status` 标记为 `tbd`，提交用户人工审阅修改
@@ -391,7 +392,7 @@ Claremont 系数 = status=active 的伏笔数 - status=resolved 的伏笔数
 
 - **小偏离**（场景内部调整）：记录偏离点，继续写作
 - **中偏离**（章节内事件顺序调整）：记录偏离点，章节审查时重点检查
-- **大偏离**（核心事件改变、主线走向变化）：**立即暂停**，调用 `dp-set-outline` 的大纲修订流程
+- **大偏离**（核心事件改变、主线走向变化）：**立即暂停**，调用 `skill("dp-set-outline")` 的大纲修订流程
 
 大偏离判定标准：如果这个偏离会导致后续 2 章以上的大纲失效，就是大偏离。
 
@@ -410,7 +411,7 @@ Claremont 系数 = status=active 的伏笔数 - status=resolved 的伏笔数
 1. **元数据注入**：为每个导入章节补充元数据头，`review_status: imported`
 2. **内容分析**：逐章阅读，提取世界观设定引入、角色出场、伏笔种子、与大纲的对应关系
 3. **伏笔场记回填**：回溯创建或更新 `tracking/thread-*` 伏笔文件，发现呈报用户确认
-4. **连续性检查**：对导入章节运行 `dp-review-consistency`
+4. **连续性检查**：对导入章节调用 `skill("dp-review-consistency")`
 5. **大纲对照**：与大纲比对，记录偏离点。若存在大偏离，建议修订大纲
 6. **续写衔接**：建立交接点，总结末章结尾状态，下一章进入正常 Pre-Draft Gate
 
@@ -445,11 +446,11 @@ digraph chapter_draft {
     node [shape=box, style=rounded];
 
     start [label="开始写新章节"];
-    gate [label="Pre-Draft Gate\n十二项强制检查\n(含工作区加载)"];
+    gate [label="Pre-Draft Gate\n十三项强制检查\n(含工作区加载)"];
     gate_pass [label="全部通过？" shape=diamond];
     fix_gate [label="补齐缺失项"];
     plan [label="确定写作重点\n场景/字数/情绪"];
-    write [label="逐场景写作\n(可调用 dp-chapter-direct)"];
+    write [label="逐场景写作\n(调用 skill(\"dp-chapter-direct\"))"];
     self_check [label="自检\n揭示/对话/伏笔"];
 
     review [label="三阶段审查流水线"];
@@ -468,7 +469,7 @@ digraph chapter_draft {
     save_review [label="保存审查报告\nchapters/chapter-NNN/review.md"];
     save_output [label="保存终稿\noutput/chapter-NNN.md"];
     update_thread [label="更新伏笔文件\n检查 Claremont 系数"];
-    summary [label="调用 dp-chapter-summary\n生成本章摘要"];
+    summary [label="调用 skill(\"dp-chapter-summary\")\n生成本章摘要"];
     done [label="本章完成\n循环至下一章" shape=doublecircle];
 
     start -> gate;
@@ -515,6 +516,7 @@ digraph chapter_draft {
 | 协作 | `dp-review-consistency` | 连续性检查 |
 | 协作 | `dp-tool-research` | 写作中遇到不确定的细节时回调做考据；作者调优 |
 | 协作 | `dp-tool-version` | Git 版本管理 |
+| 协作 | `dp-chapter-adult` | 成人场景写作方法论（检测到 adult.md 时调用 `skill("dp-chapter-adult")`） |
 | 下游 | `dp-chapter-summary` | 章节完成后生成摘要 |
 
 ## 终态

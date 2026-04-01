@@ -175,4 +175,4 @@ digraph manuscript_versioning {
 
 ## 终止状态
 
-版本提交完成，commit 消息符合规范，关联产物一起入库，git tag 已创建（如需）。`git status` 显示工作区干净，没有遗留的未提交改动。后续如需修订，创建新版本分支，走 `dp-chapter-draft` + `dp-review-consistency` 流程后重新提交。
+版本提交完成，commit 消息符合规范，关联产物一起入库，git tag 已创建（如需）。`git status` 显示工作区干净，没有遗留的未提交改动。后续如需修订，创建新版本分支，走 `skill("dp-chapter-draft")` + `skill("dp-review-consistency")` 流程后重新提交。

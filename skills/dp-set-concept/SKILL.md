@@ -132,7 +132,7 @@ review_status: imported
 ```
 
 2. **伏笔回溯**：扫描章节正文，为识别到的伏笔创建 `docs/dreampowers/tracking/thread-NNN-描述性名称.md`
-3. **连续性校验**：调用 `dp-review-consistency` 检查连续性
+3. **连续性校验**：调用 `skill("dp-review-consistency")` 检查连续性
 4. **续写衔接**：整理末章结尾状态，生成续写指令卡
 
 **续写指令卡格式**：

@@ -49,6 +49,7 @@ description: Use when creating story outlines, planning chapter structure, or ma
 - [ ] 标注伏笔植入点，同步创建伏笔文件至 `docs/dreampowers/tracking/`
 - [ ] 标注高潮/低谷节奏（张弛有度）
 - [ ] 创建章节工作区（`docs/dreampowers/chapters/chapter-NNN/`），添加符号链接（含 `style.md`），编写 `spec.md`
+- [ ] 检测 `dp-chapter-adult` 是否已安装。若已安装：通过提问式模板收集用户偏好，生成 `docs/dreampowers/tracking/adult.md`，仅在大纲中标注了成人场景的章节工作区添加 `adult.md` 符号链接（有链接 = 本章含成人场景）
 - [ ] 交叉验证（揭示时间表 vs 大纲 vs 伏笔 vs 概念分配 vs 主题分布）
 - [ ] 大纲审查：派遣子 agent 检查结构完整性
 - [ ] 用户确认大纲
@@ -574,7 +575,7 @@ Claremont 系数 = 已植入的伏笔数 - 已回收的伏笔数
 章节工作区在本技能的大纲构建过程中创建。流程：
 
 1. **`dp-set-concept`**：拆分源文件到 `set/concept/`、`set/character/`
-2. **本技能**（dp-set-outline）：构建大纲时，为每章创建 `chapters/chapter-NNN/` 文件夹，添加符号链接，编写 `spec.md`，创建 `tracking/iron-rules.md`
+2. **本技能**（dp-set-outline）：构建大纲时，为每章创建 `chapters/chapter-NNN/` 文件夹，添加符号链接，编写 `spec.md`，创建 `tracking/iron-rules.md`。若 `dp-chapter-adult` 已安装，通过提问式模板生成 `tracking/adult.md`，仅在标注了成人场景的章节工作区添加符号链接（有链接 = 本章含成人场景）
 3. **`dp-chapter-draft`**：写作时只读取 `chapters/chapter-NNN/` 目录
 
 ### 章节工作区目录结构
@@ -586,6 +587,7 @@ docs/dreampowers/chapters/chapter-NNN/
 ├── review.md                        # 章节审查报告（审查阶段产生）
 ├── iron-rules.md                  → ../../tracking/iron-rules.md
 ├── style.md                       → ../../tracking/style.md
+├── adult.md                       → ../../tracking/adult.md  (仅当大纲标注本章含成人场景；有此链接 = 本章含成人场景)
 ├── summary-*.md                   → ../../timeline/summary-*.md  (由 dp-chapter-draft 动态创建)
 ├── spirit-energy.md               → ../../set/concept/spirit-energy-system.md
 ├── sect-hierarchy.md              → ../../set/concept/sect-hierarchy.md
@@ -705,7 +707,7 @@ docs/dreampowers/chapters/chapter-NNN/
 #### 第一步：冻结当前进度
 
 - 停止所有正在进行的章节写作
-- 用 `dp-tool-version` 提交当前所有已完成章节，标签建议：`pre-revision-[日期]`
+- 调用 `skill("dp-tool-version")` 提交当前所有已完成章节，标签建议：`pre-revision-[日期]`
 - 记录当前写作位置
 
 #### 第二步：明确修订范围
@@ -736,11 +738,11 @@ docs/dreampowers/chapters/chapter-NNN/
 
 #### 第六步：回写已完成章节（如需要）
 
-需要回写的章节走 `dp-chapter-draft` 的完整流程。回写完成后用 `dp-review-consistency` 检查连续性。
+需要回写的章节调用 `skill("dp-chapter-draft")` 走完整流程。回写完成后调用 `skill("dp-review-consistency")` 检查连续性。
 
 #### 第七步：恢复写作
 
-从中断位置继续 `dp-chapter-draft` 流程。
+从中断位置调用 `skill("dp-chapter-draft")` 继续流程。
 
 ---
 
@@ -751,6 +753,7 @@ docs/dreampowers/
 ├── tracking/
 │   ├── overview.md                   # 故事蓝本（dp-tool-research 产出）
 │   ├── style.md                     # 风格档案（dp-set-style 产出，符号链接到每个章节工作区）
+│   ├── adult.md                     # 成人场景偏好（dp-chapter-adult 安装时产出，仅成人章节工作区有符号链接）
 │   ├── iron-rules.md                # 六条铁律精简版（符号链接到每个章节工作区）
 │   └── thread-NNN-*.md              # 伏笔线索文件
 ├── timeline/
@@ -838,6 +841,7 @@ docs/dreampowers/
 | 协作 | `dp-review-reader` | 按 spec.md 中的读者评估要求执行审查 |
 | 协作 | `dp-character-style` | 角色风格应反映其对主题的立场 |
 | 协作 | `dp-tool-version` | 大纲修订时冻结进度 |
+| 协作 | `dp-chapter-adult` | 若已安装，大纲阶段通过提问式模板生成 `tracking/adult.md`，仅在标注成人场景的章节工作区添加符号链接（有链接 = 本章含成人场景） |
 
 ---
 
@@ -856,13 +860,13 @@ digraph set_outline {
     chapters [label="逐章细化\n场景+POV+情绪+时间线手法"];
     foreshadow [label="标注伏笔\n同步创建 tracking/thread-*"];
     rhythm [label="标注节奏\n高潮/低谷"];
-    workspace [label="创建章节工作区\n符号链接+spec.md\n+iron-rules.md链接\n+style.md链接"];
+    workspace [label="创建章节工作区\n符号链接+spec.md\n+iron-rules.md链接\n+style.md链接\n+adult.md链接(仅成人章节)"];
     validate [label="交叉验证\n(六项全部通过)" shape=diamond];
     review [label="子 agent 审查"];
     review_pass [label="审查通过？" shape=diamond];
     user_confirm [label="用户确认？" shape=diamond];
     save [label="存储大纲\noutlines/outline-*.md"];
-    transition [label="调用 dp-chapter-draft" shape=doublecircle];
+    transition [label="调用 skill(\"dp-chapter-draft\")" shape=doublecircle];
 
     read -> theme;
     theme -> reveal;

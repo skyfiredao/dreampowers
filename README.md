@@ -22,7 +22,7 @@ Dreampowers provides a disciplined, skill-driven workflow for writing Chinese fi
 - **Reader-perspective testing**: cold-read simulation scoring page-turning desire, cognitive load, empathy, and pacing feel
 - **AI-flavor detection**: quantified pattern matching to eliminate formulaic AI writing habits
 - **Writing style definition**: 7-dimension questionnaire (narrative distance, sentence rhythm, sensory density, vocabulary register, metaphor strategy, emotional expression, dialogue ratio) with 54+ reference authors across 9 genres
-- **Opt-in mature content**: intimate scene craft direction, installed separately via `--all` flag
+- **Opt-in mature content**: adult scene writing with sensory completeness and narrative integrity framework, two-tier system (softcore/hardcore), user-defined `adult.md` preferences, installed separately via `--all` flag
 - **Three-layer isolation** from coding skills (entry switching + `dp-` prefix + directory isolation)
 - **Git-based version management** for manuscripts
 
@@ -45,7 +45,7 @@ Dreampowers provides a disciplined, skill-driven workflow for writing Chinese fi
 | `dp-chapter-draft` | Chapter writing with pre-draft gate, 3-stage review, 4 continuous writing modes, timeline execution, handwritten chapter integration, era-accurate writing (period-correct objects and perspective), outline-as-skeleton discipline |
 | `dp-chapter-summary` | Plain-text chapter summary (≤300 chars, no formatting) from `output/chapter-NNN.md` only, for cross-chapter continuity |
 | `dp-chapter-direct` | Scene-type directing (action/emotional/dialogue sub-modes) + narrative pacing control, tension-relief law, camera-language description methodology |
-| `dp-chapter-adult` | **Opt-in**: Intimate scene craft direction with intensity levels and emotional-depth rules |
+| `dp-chapter-adult` | **Opt-in**: Adult scene writing with sensory completeness, narrative integrity framework, two-tier system (softcore/hardcore), user-defined `adult.md` preferences |
 
 ### Tool Skills
 
@@ -59,7 +59,7 @@ Dreampowers provides a disciplined, skill-driven workflow for writing Chinese fi
 | Skill | Purpose |
 |---|---|
 | `dp-review-reader` | Reader-perspective experience testing: page-turning desire, cognitive load, empathy verification, pacing feel |
-| `dp-review-consistency` | Cross-chapter consistency verification (8 dimensions) + prose revision and AI-flavor detection/elimination + final completion checklist with full-book consistency scan |
+| `dp-review-consistency` | Cross-chapter consistency verification (9 dimensions) + prose revision and AI-flavor detection/elimination + final completion checklist with full-book consistency scan |
 
 ## Key Innovations
 
@@ -105,7 +105,7 @@ Every chapter passes through three sequential review stages:
 
 After passing the three-stage review, every chapter enters an external review loop:
 1. **Reader review** (dp-review-reader): cold-reader experience testing across four dimensions
-2. **Consistency review** (dp-review-consistency): eight-dimension consistency check + prose revision with AI-flavor detection + writing style verification against style.md
+2. **Consistency review** (dp-review-consistency): nine-dimension consistency check + prose revision with AI-flavor detection + writing style verification against style.md
 3. **Fix and repeat**: issues from both reports are merged and fixed, then the loop repeats (max 3 iterations)
 4. **TBD fallback**: if issues persist after 3 iterations, the output file is saved as `chapter-NNN-TBD.md` for human review
 
@@ -358,7 +358,7 @@ skill_dreampowers/
     ├── dp-tool-version/              # Git version management
     ├── dp-review-reader/             # Reader-perspective testing
     ├── dp-review-consistency/        # Continuity + revision + final check
-    └── dp-chapter-adult/             # Opt-in: intimate scene craft
+    └── dp-chapter-adult/             # Opt-in: adult scene writing
 ```
 
 ## Artifact Paths
@@ -376,6 +376,7 @@ docs/dreampowers/
 │   ├── overview.md                  # One-line story summary
 │   ├── iron-rules.md               # Iron rules (symlinked to chapter folders)
 │   ├── style.md                     # Writing style profile (symlinked to chapter folders)
+│   ├── adult.md                     # Adult scene preferences (optional, symlinked to adult chapters only)
 │   └── thread-NNN-*.md              # Foreshadowing threads (thread- prefix)
 ├── timeline/                        # Timeline + chapter summaries
 │   ├── timeline.md                  # Initial timeline definition
@@ -389,6 +390,7 @@ docs/dreampowers/
         ├── draft.md                 # Draft (work in progress)
         ├── review.md                # Chapter-level review report
         ├── tuning.md                # Author tuning directives (optional, high priority when present)
+        ├── adult.md                 # Adult scene preferences (optional, chapter-level overrides global)
         ├── *.md -> set/concept/*    # Concept symlinks
         ├── *.md -> set/character/*  # Character symlinks
         ├── thread-*.md -> tracking/*# Foreshadowing symlinks

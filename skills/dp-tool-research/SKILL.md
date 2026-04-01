@@ -14,7 +14,7 @@ description: Use when starting a new story, developing a premise, exploring narr
 通过自然对话和定向考据，把用户脑中一个模糊的灵感变成自洽、完整的故事蓝本。整个过程分为两个交替的阶段：**构思**（定方向、选冲突、塑角色）和**考据**（验证真实性、充实细节、确保设定可信）。两者不是线性流程，而是根据需要随时交替。
 
 <HARD-GATE>
-在用户明确确认故事蓝本之前，禁止调用任何实现类技能。不得调用 dp-set-concept、dp-set-outline 或任何后续技能。不论故事看起来多简单，蓝本必须经过确认才能推进。
+在用户明确确认故事蓝本之前，禁止调用任何实现类技能。不得调用 `skill("dp-set-concept")`、`skill("dp-set-outline")` 或任何后续技能。不论故事看起来多简单，蓝本必须经过确认才能推进。
 </HARD-GATE>
 
 ## 反模式："这个故事很简单，不需要蓝本"
@@ -36,7 +36,7 @@ description: Use when starting a new story, developing a premise, exploring narr
 9. **撰写故事蓝本文档**（logline + 主角 + 核心冲突 + 主题 + 基调 + 考据要点）
 10. **蓝本审查** — 派遣审查子 agent 检查蓝本的可行性和自洽性
 11. **用户确认蓝本** — 等待明确批准
-12. **过渡到下一技能** — 调用 dp-set-style
+12. **过渡到下一技能** — 调用 `skill("dp-set-style")`
 
 ## 信息收集方式
 
@@ -71,7 +71,7 @@ digraph research_idea {
     review [label="蓝本审查\n(子 agent)"];
     review_pass [label="审查通过？" shape=diamond];
     user_confirm [label="用户确认蓝本？" shape=diamond];
-    transition [label="调用 dp-set-style" shape=doublecircle];
+    transition [label="调用 skill(\"dp-set-style\")" shape=doublecircle];
 
     spark -> conflict;
     conflict -> emotion;
@@ -92,7 +92,7 @@ digraph research_idea {
 }
 ```
 
-**终态是调用 dp-set-style。** 蓝本确认后，先定义写作风格，再进入世界观和角色设定。
+**终态是调用 `skill("dp-set-style")`。** 蓝本确认后，先定义写作风格，再进入世界观和角色设定。
 
 ## 提问策略
 

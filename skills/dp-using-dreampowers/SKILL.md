@@ -65,7 +65,7 @@ Dreampowers 技能覆盖系统默认行为，但**用户指令永远优先**：
 | 章节 | `dp-chapter-draft` | 章节起草（含预写关卡、三阶段审查、连续写作模式） |
 | 章节 | `dp-chapter-summary` | 章节摘要生成（AI稿或人工导入稿） |
 | 章节 | `dp-chapter-direct` | 场景导演 + 节奏控制（动作/情感/对话子模式） |
-| 章节 | `dp-chapter-adult` | 亲密场景写作（选装，需 --all 安装） |
+| 章节 | `dp-chapter-adult` | 成人场景写作：感官完整性与叙事真实（选装，需 --all 安装） |
 | 工具 | `dp-character-style` | 角色风格档案、遮名测试、对话规则、潜台词 |
 | 工具 | `dp-tool-version` | Git 版本管理（提交、标签、回滚、差异对比） |
 | 审查 | `dp-review-reader` | 读者视角体验测试（翻页欲、认知负荷、共情、节奏） |
@@ -100,7 +100,7 @@ Dreampowers 技能覆盖系统默认行为，但**用户指令永远优先**：
 | "查看伏笔状态" / "伏笔回收情况" | `dp-review-consistency` |
 | "作者调优" / "调整后续章节方向" / "我看完了前几章，想调整" | `dp-tool-research` |
 | 提交 / 版本管理 / 打标签 / 回滚 | `dp-tool-version` |
-| 亲密场景写作（需 opt-in 安装） | `dp-chapter-adult` |
+| 成人场景写作（需 opt-in 安装） | `dp-chapter-adult` |
 
 ## 创作工作流概览
 
@@ -139,8 +139,8 @@ digraph creative_flow {
 | "我先写再说" | 先检查技能，再动笔 |
 | "不需要走流程" | 技能存在就必须使用 |
 | "世界观设定可以一次性交代" | 绝对禁止。dp-set-outline 中有铁律和概念预算 |
-| "这段对话不需要节奏控制" | 对白节奏影响阅读体验，使用 dp-chapter-direct |
-| "角色说话差不多就行" | 角色风格是区分度的核心，使用 dp-character-style |
+| "这段对话不需要节奏控制" | 对白节奏影响阅读体验，调用 `skill("dp-chapter-direct")` |
+| "角色说话差不多就行" | 角色风格是区分度的核心，调用 `skill("dp-character-style")` |
 | "我记得这个技能怎么用" | 技能会更新。读当前版本 |
 | "这个任务太小了" | 小任务会膨胀。用技能 |
 | "先产出再优化" | 没有流程的产出是返工的温床 |
@@ -153,9 +153,9 @@ digraph creative_flow {
 2. **执行技能其次**（dp-chapter-draft, dp-chapter-direct, dp-character-style）——指导具体产出
 3. **审查技能最后**（dp-review-consistency, dp-review-reader）——验证产出质量
 
-"我要写个新故事" → 先 dp-tool-research，再 dp-set-concept。
-"帮我写这场打戏" → 先 dp-chapter-direct，在其指引下起草。
-"检查全书一致性" → dp-review-consistency。
+"我要写个新故事" → 先 `skill("dp-tool-research")`，再 `skill("dp-set-concept")`。
+"帮我写这场打戏" → 先 `skill("dp-chapter-direct")`，在其指引下起草。
+"检查全书一致性" → `skill("dp-review-consistency")`。
 
 ## 技能类型
 
