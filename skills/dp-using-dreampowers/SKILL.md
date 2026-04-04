@@ -22,7 +22,7 @@ description: Use when starting a Chinese fiction writing session or switching fr
 - 切换到编程模式：调用 `skill("using-superpowers")`
 - 切换回创作模式：调用 `skill("dp-using-dreampowers")`
 
-两套技能**绝不混用**。创作模式下不调用 sp-* 技能，编程模式下不调用 dp-* 技能。
+两套技能**绝不混用**。创作模式下只调用 dp-* 技能，编程模式下不调用 dp-* 技能。
 
 ## 全局串行规则（不可协商）
 
