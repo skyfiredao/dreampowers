@@ -198,7 +198,7 @@ docs/dreampowers/
         ├── style.md → tracking/style.md
         └── summary-*.md → timeline/summary-*.md  （前1-3章摘要）
 
-output/                              ← 最终版本（dp-tool-version 管理）
+release/                              ← 最终版本（dp-tool-version 管理）
 └── chapter-NNN.md
 ```
 

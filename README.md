@@ -43,7 +43,7 @@ Dreampowers provides a disciplined, skill-driven workflow for writing Chinese fi
 | Skill | Purpose |
 |---|---|
 | `dp-chapter-draft` | Chapter writing with pre-draft gate, 3-stage review, 4 continuous writing modes, timeline execution, handwritten chapter integration, era-accurate writing (period-correct objects and perspective), outline-as-skeleton discipline |
-| `dp-chapter-summary` | Plain-text chapter summary (≤300 chars, no formatting) from `output/chapter-NNN.md` only, for cross-chapter continuity |
+| `dp-chapter-summary` | Plain-text chapter summary (≤100 chars, no formatting) from `release/chapter-NNN.md` only, for cross-chapter continuity |
 | `dp-chapter-direct` | Scene-type directing (action/emotional/dialogue sub-modes) + narrative pacing control, tension-relief law, camera-language description methodology |
 | `dp-chapter-adult` | **Opt-in**: Adult scene writing with sensory completeness, narrative integrity framework, two-tier system (softcore/hardcore), user-defined `adult.md` preferences |
 
@@ -107,7 +107,7 @@ After passing the three-stage review, every chapter enters an external review lo
 1. **Reader review** (dp-review-reader): cold-reader experience testing across four dimensions
 2. **Consistency review** (dp-review-consistency): nine-dimension consistency check + prose revision with AI-flavor detection + writing style verification against style.md
 3. **Fix and repeat**: issues from both reports are merged and fixed, then the loop repeats (max 3 iterations)
-4. **TBD fallback**: if issues persist after 3 iterations, the output file is saved as `chapter-NNN-TBD.md` for human review
+4. **TBD fallback**: if issues persist after 3 iterations, the release file is saved as `chapter-NNN-TBD.md` for human review
 
 ### Narrative Techniques
 
@@ -398,7 +398,7 @@ docs/dreampowers/
         ├── style.md -> tracking/style.md
         └── summary-*.md -> timeline/summary-*.md  (prev 1-3 chapters)
 
-output/                              # Final versions
+release/                              # Final versions
 └── chapter-NNN.md
 ```
 

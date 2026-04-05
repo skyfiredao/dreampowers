@@ -68,7 +68,7 @@ description: Use when writing chapter text, drafting scenes, or producing manusc
 - [ ] 三阶段审查（Stage 1 → Stage 2 → Stage 3）
 - [ ] 用户确认或修改
 - [ ] 保存草稿到章节工作区 `chapters/chapter-NNN/draft.md`
-- [ ] 保存终稿到 `output/chapter-NNN.md`
+- [ ] 保存终稿到 `release/chapter-NNN.md`
 - [ ] 更新伏笔文件（`docs/dreampowers/tracking/thread-*.md`）
 - [ ] 调用 `skill("dp-chapter-summary")` 生成本章摘要
 
@@ -248,7 +248,7 @@ digraph external_review_loop {
     fix [label="根据两份报告修改章节"];
     count [label="第几轮？" shape=diamond];
     user_confirm [label="提交用户确认"];
-    tbd [label="output 文件名加 TBD\n提交用户人工审阅"];
+    tbd [label="release 文件名加 TBD\n提交用户人工审阅"];
 
     three_stage_pass -> reader;
     reader -> consistency;
@@ -268,7 +268,7 @@ digraph external_review_loop {
 2. **一致性审阅跟进**：调用 `skill("dp-review-consistency")` 第一部分（连续性检查）+ 第二部分（散文修订与AI味检测，含对照 `style.md` 的写作风格检查）
 3. **合并修改**：将两份报告的问题汇总，统一修改章节。修改后不需要重新走三阶段审查（三阶段已通过，外部审阅只做体验和一致性层面的调整）
 4. **循环上限 3 次**：修改后重新进入读者审阅 → 一致性审阅。总循环最多 3 次
-5. **3 次后仍有问题**：终稿保存至 `output/chapter-NNN-TBD.md`，`review_status` 标记为 `tbd`，提交用户人工审阅修改
+5. **3 次后仍有问题**：终稿保存至 `release/chapter-NNN-TBD.md`，`review_status` 标记为 `tbd`，提交用户人工审阅修改
 
 ### 判定"存在问题"的标准
 
@@ -288,16 +288,16 @@ docs/dreampowers/chapters/chapter-NNN/draft.md
 审查通过并获得用户确认后，终稿保存至：
 
 ```
-output/chapter-NNN.md
+release/chapter-NNN.md
 ```
 
 外部审阅闭环 3 次后仍有问题的章节，终稿保存至：
 
 ```
-output/chapter-NNN-TBD.md
+release/chapter-NNN-TBD.md
 ```
 
-用户人工审阅修改完成后，将文件重命名为 `output/chapter-NNN.md`，`review_status` 改为 `approved`。
+用户人工审阅修改完成后，将文件重命名为 `release/chapter-NNN.md`，`review_status` 改为 `approved`。
 
 `NNN` 为零填充章节号（001, 002, 003...）。
 
@@ -418,7 +418,7 @@ Claremont 系数 = status=active 的伏笔数 - status=resolved 的伏笔数
 ### 接入规则
 
 - 导入章节保存为 `chapters/chapter-NNN/draft.md`，`review_status` 标记为 `imported`
-- 终稿保存至 `output/chapter-NNN.md`
+- 终稿保存至 `release/chapter-NNN.md`
 - 导入章节**不**经过三阶段审查（作者原作）
 - 但**会**被扫描以追踪连续性和伏笔
 - 用户可主动要求审查导入章节
@@ -461,13 +461,13 @@ digraph chapter_draft {
     ext_issue [label="存在问题？" shape=diamond];
     ext_fix [label="根据报告修改章节"];
     ext_count [label="循环次数？" shape=diamond];
-    tbd [label="保存为 TBD\noutput/chapter-NNN-TBD.md"];
+    tbd [label="保存为 TBD\nrelease/chapter-NNN-TBD.md"];
 
     user [label="用户确认？" shape=diamond];
     user_fix [label="按用户意见修改"];
     save_draft [label="保存草稿\nchapters/chapter-NNN/draft.md"];
     save_review [label="保存审查报告\nchapters/chapter-NNN/review.md"];
-    save_output [label="保存终稿\noutput/chapter-NNN.md"];
+    save_release [label="保存终稿\nrelease/chapter-NNN.md"];
     update_thread [label="更新伏笔文件\n检查 Claremont 系数"];
     summary [label="调用 skill(\"dp-chapter-summary\")\n生成本章摘要"];
     done [label="本章完成\n循环至下一章" shape=doublecircle];
@@ -497,8 +497,8 @@ digraph chapter_draft {
     user -> user_fix [label="要修改"];
     user_fix -> self_check;
     save_draft -> save_review;
-    save_review -> save_output;
-    save_output -> update_thread;
+    save_review -> save_release;
+    save_release -> update_thread;
     update_thread -> summary;
     summary -> done;
 }

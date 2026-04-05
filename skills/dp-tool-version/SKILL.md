@@ -93,16 +93,16 @@ description: Use when committing chapter drafts, tagging milestones, managing ve
 
 ```bash
 # 回滚单个章节：查看历史 → 恢复 → 提交
-git log --oneline -- output/chapter-003.md
-git checkout <commit-hash> -- output/chapter-003.md
+git log --oneline -- release/chapter-003.md
+git checkout <commit-hash> -- release/chapter-003.md
 git commit -m "chapter(003): 回滚至审查通过版本"
 
 # 回滚到里程碑：从标签创建修订分支（不影响 main）
 git checkout -b revision/rollback-to-draft-v1 draft-v1
 
 # 对比版本差异
-git diff draft-v1 -- output/
-git diff draft-v1 review-v1 -- output/chapter-003.md
+git diff draft-v1 -- release/
+git diff draft-v1 review-v1 -- release/chapter-003.md
 ```
 
 回滚原则：**永远不要用 `git reset --hard`**，用 `git checkout` 或 `git revert` 保留操作历史。回滚前先提交当前状态。回滚操作本身也要有规范的 commit 消息。

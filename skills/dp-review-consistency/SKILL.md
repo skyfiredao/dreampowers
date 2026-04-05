@@ -216,7 +216,7 @@ CC = 已引入伏笔数 - 已回收伏笔数
 
 | 来源技能 | 读取内容 |
 |---------|---------|
-| `dp-chapter-draft` | 已完成的章节稿件（`output/chapter-NNN.md`） |
+| `dp-chapter-draft` | 已完成的章节稿件（`release/chapter-NNN.md`） |
 | `dp-set-concept` | 世界规则、角色设定（`docs/dreampowers/set/`） |
 | `dp-set-outline` | 揭示时间表、铁律约束、计划的情节事件、章节目标 |
 | 章节文件夹 | `docs/dreampowers/chapters/chapter-NNN/` 中的符号链接和 `spec.md` |
@@ -255,7 +255,7 @@ CC = 已引入伏笔数 - 已回收伏笔数
 
 严格按以下顺序执行，不可跳步。
 
-1. 读取目标章节稿件（`output/chapter-NNN.md`）
+1. 读取目标章节稿件（`release/chapter-NNN.md`）
 2. 读取全部已有章节（回溯至第 1 章）
 3. 读取世界观设定（`docs/dreampowers/set/`）
 4. 读取揭示时间表
@@ -763,8 +763,8 @@ digraph deai_flow {
 
 ### 八、格式与元数据
 
-- 章节命名遵循 `output/chapter-NNN.md`，头部元数据完整
-- 不存在 `output/chapter-NNN-TBD.md` 文件（所有 TBD 章节均已由用户审阅并重命名为正常格式）
+- 章节命名遵循 `release/chapter-NNN.md`，头部元数据完整
+- 不存在 `release/chapter-NNN-TBD.md` 文件（所有 TBD 章节均已由用户审阅并重命名为正常格式）
 - 所有章节 `review_status` 为 `approved`
 
 ### 九、世界观最终校验
@@ -903,7 +903,7 @@ digraph finishing_review {
 | 开篇核心问题未回答 | 故事没有兑现自己的契约 |
 | 最终通检存在 FAIL 维度 | 连续性问题未解决 |
 | 有章节 `review_status` ≠ `approved` | 稿件混入未审查内容 |
-| 存在 `output/chapter-NNN-TBD.md` 文件 | TBD 章节未经用户人工审阅 |
+| 存在 `release/chapter-NNN-TBD.md` 文件 | TBD 章节未经用户人工审阅 |
 | `deferred-threads.md` 条目无法与伏笔文件对应 | 续作伏笔管理混乱 |
 
 出现 Red Flag 后：暂停当前流程，判断问题层级。structure-level 交回 `skill("dp-chapter-draft")`，prose-level 回到修订第一遍重新开始。AI味浓度 ≥8 或红色标记 >15 的章节，直接交回 `skill("dp-chapter-draft")` 重新起草。终检 Red Flag 不得标记稿件为完成，修正问题后重新检查。

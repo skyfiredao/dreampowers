@@ -1,6 +1,6 @@
 ---
 name: dp-chapter-summary
-description: Use when generating a plain-text chapter summary (≤300 Chinese characters, no formatting) from the finished chapter, for cross-chapter continuity
+description: Use when generating a plain-text chapter summary (≤100 Chinese characters, no formatting) from the finished chapter, for cross-chapter continuity
 ---
 
 <SUBAGENT-STOP>
@@ -13,7 +13,7 @@ description: Use when generating a plain-text chapter summary (≤300 Chinese ch
 
 ## 定义
 
-摘要 = **一段纯文本，300 字以内，无任何格式**。
+摘要 = **一段纯文本，100 字以内，无任何格式**。
 
 它是跨章节连续性的唯一桥梁。未来章节的工作区通过软链接引用前序摘要，AI 在写作时只能看到这些摘要，看不到完整的前序章节正文。
 
@@ -29,13 +29,13 @@ description: Use when generating a plain-text chapter summary (≤300 Chinese ch
 
 ### 唯一输入
 
-**章节正文**—— `output/chapter-NNN.md`（已完成的章节）。
+**章节正文**—— `release/chapter-NNN.md`（已完成的章节）。
 
 不读取 spec.md、thread-*.md、前序摘要、大纲、或任何其他文件。唯一的输入就是章节正文本身。
 
 ### 输出
 
-`docs/dreampowers/timeline/summary-NNN.md` —— 纯文本文件，内容为一段话，300 字以内。
+`docs/dreampowers/timeline/summary-NNN.md` —— 纯文本文件，内容为一段话，100 字以内。
 
 ## 生成流程
 
@@ -53,7 +53,7 @@ description: Use when generating a plain-text chapter summary (≤300 Chinese ch
 
 ### 第四步：检查字数和格式
 
-- 超过 300 字？继续删减，直到 300 字以内。
+- 超过 100 字？继续删减，直到 100 字以内。
 - 含有 `#`、`-`、`*`、`>`、`|`、`##`、`###`、`**`、`__` 等任何 Markdown 标记？去掉。
 - 含有标题行、列表、表格、分隔线？去掉。
 - 分了多段？合并为一段。
@@ -74,7 +74,7 @@ description: Use when generating a plain-text chapter summary (≤300 Chinese ch
 
 ## 导入章节处理
 
-用户导入手写章节时，先存入 `output/chapter-NNN.md`，再按标准流程生成摘要。
+用户导入手写章节时，先存入 `release/chapter-NNN.md`，再按标准流程生成摘要。
 
 流程与 AI 起草的章节完全相同。
 
@@ -91,7 +91,7 @@ description: Use when generating a plain-text chapter summary (≤300 Chinese ch
 
 - **引用大纲的计划信息** ❌ 摘要只记录已发生的事
 - **读取 spec.md、thread-*.md 等非章节正文的文件** ❌ 唯一输入是章节正文
-- **超过 300 字** ❌ 硬限，无例外
+- **超过 100 字** ❌ 硬限，无例外
 - **使用任何 Markdown 格式**（标题、列表、加粗、表格）❌ 纯文本，一段话
 - **分成多段** ❌ 一段话
 - **接近全章复述** ❌ 只留事实骨架
@@ -100,4 +100,4 @@ description: Use when generating a plain-text chapter summary (≤300 Chinese ch
 
 ## 终止状态
 
-摘要文件已保存到 `docs/dreampowers/timeline/summary-NNN.md`。文件内容是一段纯文本，300 字以内，无任何格式标记，只含关键事实。
+摘要文件已保存到 `docs/dreampowers/timeline/summary-NNN.md`。文件内容是一段纯文本，100 字以内，无任何格式标记，只含关键事实。
