@@ -53,23 +53,24 @@ Dreampowers 技能覆盖系统默认行为，但**用户指令永远优先**：
 
 **在任何创作行动之前，先调用对应的技能。** 哪怕只有 1% 的可能性适用，也要先调用确认。调用后发现不适用，可以不用。
 
-## 13 技能总览
+## 14 技能总览
 
 | 类别 | 技能 | 用途 |
 |------|------|------|
 | 入口 | `dp-using-dreampowers` | 模式切换、技能路由、工作流概览 |
-| 工具 | `dp-tool-research` | 故事构思 + 考据调研 + 作者调优 |
+| 工具 | `dp-tool-research` | 故事构思 + 考据调研 + 故事命名 + 作者调优 |
 | 设定 | `dp-set-style` | 作品级写作风格定义（七维问卷 → style.md 风格档案） |
 | 设定 | `dp-set-concept` | 世界观/角色设定、概念隔离、故事级时间线、外部素材导入 |
 | 设定 | `dp-set-outline` | 大纲构建、揭示节奏、主题编织、伏笔规划 |
-| 章节 | `dp-chapter-draft` | 章节起草（含预写关卡、三阶段审查、连续写作模式） |
+| 章节 | `dp-chapter-draft` | 章节起草（含草稿预审、三阶段审查、连续写作模式） |
 | 章节 | `dp-chapter-summary` | 章节摘要生成（AI稿或人工导入稿） |
 | 章节 | `dp-chapter-direct` | 场景导演 + 节奏控制（动作/情感/对话子模式） |
 | 章节 | `dp-chapter-adult` | 成人场景写作：感官完整性与叙事真实（选装，需 --all 安装） |
 | 工具 | `dp-character-style` | 角色风格档案、遮名测试、对话规则、潜台词 |
-| 工具 | `dp-tool-version` | Git 版本管理（提交、标签、回滚、差异对比） |
+| 工具 | `dp-tool-version` | Git 版本管理（提交、回滚、差异对比） |
 | 审查 | `dp-review-reader` | 读者视角体验测试（翻页欲、认知负荷、共情、节奏） |
-| 审查 | `dp-review-consistency` | 连续性校验 + 文笔修订/去AI味 + 终检 |
+| 审查 | `dp-review-consistency` | 连续性校验 + 修订建议 + AI味检测 |
+| 审查 | `dp-review-final-report` | 全书终检报告（人工可选，全书完成后） |
 
 ## 意图路由表
 
@@ -92,14 +93,14 @@ Dreampowers 技能覆盖系统默认行为，但**用户指令永远优先**：
 | 节奏控制 / 张力弧线 | `dp-chapter-direct` |
 | 角色风格 / 语言风格 / 潜台词 | `dp-character-style` |
 | 连续性检查 | `dp-review-consistency` |
-| 修订打磨 / AI味检测消除 | `dp-review-consistency` |
-| 终检 / 全书一致性扫描 | `dp-review-consistency` |
+| 修订建议 / AI味检测 | `dp-review-consistency` |
+| 终检 / 全书一致性扫描 | `dp-review-final-report` |
 | 用读者视角测试章节体验 | `dp-review-reader` |
 | "这段打戏/情感戏/对白写得怎么样？" / 评价已写场景 | `dp-review-reader` |
 | "帮我分析这个角色的说话方式" / 分析角色对话 | `dp-character-style` |
 | "查看伏笔状态" / "伏笔回收情况" | `dp-review-consistency` |
 | "作者调优" / "调整后续章节方向" / "我看完了前几章，想调整" | `dp-tool-research` |
-| 提交 / 版本管理 / 打标签 / 回滚 | `dp-tool-version` |
+| 提交 / 版本管理 / 回滚 | `dp-tool-version` |
 | 成人场景写作（需 opt-in 安装） | `dp-chapter-adult` |
 
 ## 创作工作流概览
@@ -116,14 +117,16 @@ digraph creative_flow {
 
     "dp-chapter-draft\n章节起草" -> "dp-chapter-summary\n章节摘要" [style=dashed, label="每章完成后"];
     "dp-chapter-draft\n章节起草" -> "dp-chapter-direct\n场景导演与节奏" [style=dashed, label="写场景时"];
+    "dp-chapter-draft\n章节起草" -> "dp-chapter-adult\n成人场景(选装)" [style=dashed, label="adult.md存在时"];
     "dp-chapter-draft\n章节起草" -> "dp-character-style\n角色风格" [style=dashed, label="写对白时"];
     "dp-chapter-draft\n章节起草" -> "dp-review-reader\n读者视角测试" [style=dashed, label="体验验证"];
     "dp-chapter-draft\n章节起草" -> "dp-review-consistency\n一致性审查与修订" [style=dashed, label="审查/打磨"];
 
     "dp-set-concept\n世界观与角色设定" -> "dp-tool-research\n故事构思与考据" [style=dashed, label="需要考据时"];
 
-    "dp-chapter-draft\n章节起草" -> "dp-tool-version\nGit版本管理" [style=dashed, label="提交/里程碑"];
-    "dp-review-consistency\n一致性审查与修订" -> "dp-tool-version\nGit版本管理" [style=dashed, label="终检通过后"];
+    "dp-chapter-draft\n章节起草" -> "dp-tool-version\nGit版本管理" [style=dashed, label="提交/版本管理"];
+    "dp-review-consistency\n一致性审查与修订" -> "dp-tool-version\nGit版本管理" [style=dashed, label="审阅通过后"];
+    "dp-review-final-report\n全书终检报告" -> "dp-tool-version\nGit版本管理" [style=dashed, label="终检通过后"];
 }
 ```
 
@@ -159,50 +162,108 @@ digraph creative_flow {
 
 ## 技能类型
 
-**刚性技能**（dp-set-outline 中的铁律、dp-review-consistency）：严格遵循。不能因为"感觉可以"就跳过步骤。
+**刚性技能**（严格遵循，不可跳步）：
+- `dp-set-outline`：大纲流程和六条铁律
+- `dp-set-concept`：概念隔离和物理分离流程
+- `dp-chapter-summary`：摘要格式和字数限制
+- `dp-chapter-adult`：叙事必要性框架和分级边界
+- `dp-review-consistency`：连续性检查维度和AI味检测规则为刚性，修订建议流程为弹性
 
-**弹性技能**（dp-chapter-draft, dp-chapter-direct）：原则不变，细节可因上下文调整。
+**弹性技能**（原则不变，细节可因上下文调整）：
+- `dp-chapter-draft`：章节写作流程（但三阶段审查流水线是刚性的）
+- `dp-chapter-direct`：场景导演和节奏控制（但张弛法则是刚性的）
+- `dp-review-reader`：四维度评估标准固定，权重可调
+- `dp-tool-version`：提交规范固定，分支策略灵活
+- `dp-set-style`：问卷维度固定，细节可调
+- `dp-tool-research`：流程步骤固定，提问策略灵活
+- `dp-character-style`：对话规则固定，风格刻画灵活
 
 技能本身会告诉你它属于哪种。
 
 ## 产出物路径约定
 
+Dreampowers 的所有产出物存放在 `docs/dreampowers/` 目录下，该目录作为**独立的 Git 仓库**管理稿件版本（由 `dp-tool-version` 技能操作）。
+
+**首次使用时必须初始化**：
+
+```bash
+mkdir -p docs/dreampowers/{input,set/{world,concept,character},tracking,timeline,outlines,chapters,release}
+cd docs/dreampowers
+git init
 ```
-docs/dreampowers/
-├── input/                           ← 用户导入的原始数据（临时区，不自动清除）
+
+目录结构：
+
+```
+docs/dreampowers/                      ← 独立 Git 仓库（git init）
+├── input/                             ← 用户导入的原始数据（临时区，不自动清除）
 ├── set/
-│   ├── world/                       ← 世界逻辑关系与背景（dp-set-concept 产出）
-│   ├── concept/                     ← 具体概念名词，一概念一文件
-│   └── character/                   ← 角色文件（单文件或目录）
-├── tracking/                        ← 跨章持久追踪
-│   ├── overview.md                   ← 一句话故事概要
-│   ├── iron-rules.md                ← 铁律文件（软链接到各章节文件夹）
-│   ├── style.md                     ← 写作风格档案（dp-set-style 产出，软链接到各章节文件夹）
-│   └── thread-NNN-*.md              ← 伏笔线索文件（thread- 前缀）
-├── timeline/                        ← 时间线 + 章节摘要
-│   ├── timeline.md                  ← 故事级时间线（dp-set-concept 产出）
-│   └── summary-NNN.md               ← 每章摘要（dp-chapter-summary 产出）
-├── outlines/                        ← 大纲 + 全书审查报告
-│   ├── outline-*.md                 ← 大纲文件（dp-set-outline 产出）
-│   └── review-*.md                  ← 全书审查报告（dp-review-consistency 产出）
-└── chapters/                        ← 章节工作区
-    └── chapter-NNN/
-        ├── spec.md                 ← 元数据（预算、门控、依赖、评估）
-        ├── draft.md                 ← 草稿（进行中，可修订）
-        ├── review.md                ← 章节审查报告
-        ├── tuning.md                ← 作者调优指令（可选，存在时优先级高）
-        ├── *.md → set/concept/*     ← 概念符号链接
-        ├── *.md → set/character/*   ← 角色符号链接
-        ├── thread-*.md → tracking/* ← 伏笔符号链接
-        ├── iron-rules.md → tracking/iron-rules.md
-        ├── style.md → tracking/style.md
-        └── summary-*.md → timeline/summary-*.md  （前1-3章摘要）
-
-release/                              ← 最终版本（dp-tool-version 管理）
-└── chapter-NNN.md
+│   ├── world/                         ← 世界逻辑关系与背景（dp-set-concept 产出）
+│   ├── concept/                       ← 具体概念名词，一概念一文件
+│   └── character/                     ← 角色文件（单文件或目录）
+├── tracking/
+│   ├── overview.md                    ← 一句话故事概要
+│   ├── iron-rules.md                  ← 铁律文件（软链接到各章节文件夹）
+│   ├── style.md                       ← 写作风格档案（dp-set-style 产出，软链接到各章节文件夹）
+│   ├── adult.md                       ← 成人场景偏好（选装，dp-set-outline 产出）
+│   ├── thread-NNN-*.md                ← 伏笔线索文件（thread- 前缀）
+│   └── deferred-threads.md            ← 续作保留悬念清单（dp-review-consistency 产出）
+├── timeline/
+│   ├── timeline.md                    ← 故事级时间线（dp-set-concept 产出）
+│   └── summary-NNN.md                 ← 每章摘要（dp-chapter-summary 产出）
+├── outlines/
+│   ├── outline-*.md                   ← 大纲文件（dp-set-outline 产出）
+│   └── review-*.md                    ← 全书审查报告（dp-review-consistency 产出）
+├── chapters/
+│   └── chapter-NNN/
+│       ├── spec.md                    ← 章节 spec（七节结构：框架 + 门控评估 + 写作蓝图）
+│       ├── draft.md                   ← 草稿（进行中，可修订）
+│       ├── review.md                  ← 章节审查报告
+│       ├── tuning.md                  ← 作者调优指令（可选，存在时优先级高）
+│       ├── *.md → set/concept/*       ← 概念符号链接
+│       ├── *.md → set/character/*     ← 角色符号链接
+│       ├── thread-*.md → tracking/*   ← 伏笔符号链接
+│       ├── iron-rules.md → tracking/iron-rules.md
+│       ├── style.md → tracking/style.md
+│       ├── outline-*.md → outlines/outline-*.md  （大纲符号链接）
+│       └── summary-*.md → timeline/summary-*.md  （前1-3章摘要）
+└── release/
+    └── chapter-NNN.md                 ← 最终版本（dp-tool-version 管理）
 ```
 
-章节文件夹（`docs/dreampowers/chapters/chapter-NNN/`）是**完全自包含**的写作单元。AI 写作时**只读章节文件夹内的文件**，不直接访问 `set/concept/` 或 `set/character/` 源目录。只有看不见的信息才能保证不会被使用。
+章节文件夹（`docs/dreampowers/chapters/chapter-NNN/`）是**完全自包含**的写作单元。草稿预审阶段读取文件夹全部材料并写入 spec.md 第六、七节（门控评估结果 + 写作蓝图），用户确认后，写作阶段**只读 spec.md**，不再访问文件夹中的其他文件。一致性检查（`dp-review-consistency`）读 `draft.md` + `spec.md` + 前序已发布章节；读者审阅（`dp-review-reader`）只读 `draft.md`，不读 spec.md。
+
+## 路径约定
+
+所有 dp-* 技能中的文件路径一律写完整路径，从 `docs/dreampowers/` 开始。不得省略前缀，不得只写文件名。
+
+### 全局文件清单
+
+下表列出所有技能可能产出或消费的文件。**文件名和路径以此表为准，不得自行发明。**
+
+| 完整路径 | 文件名格式 | 产出技能 | 说明 |
+|----------|-----------|---------|------|
+| `docs/dreampowers/tracking/overview.md` | 固定 | dp-tool-research | 一句话故事概要 |
+| `docs/dreampowers/tracking/style.md` | 固定 | dp-set-style | 写作风格档案 |
+| `docs/dreampowers/tracking/iron-rules.md` | 固定 | dp-set-outline | 六条铁律精简版 |
+| `docs/dreampowers/tracking/adult.md` | 固定 | dp-set-outline | 成人场景偏好（选装） |
+| `docs/dreampowers/tracking/thread-NNN-<name>.md` | NNN 三位数 + 描述性名称 | dp-set-outline / dp-chapter-draft | 伏笔线索文件 |
+| `docs/dreampowers/tracking/deferred-threads.md` | 固定 | dp-review-consistency | 续作保留悬念清单 |
+| `docs/dreampowers/timeline/timeline.md` | 固定 | dp-set-concept | 故事级时间线 |
+| `docs/dreampowers/timeline/summary-NNN.md` | NNN 三位数章节号 | dp-chapter-summary | 章节摘要（纯文本 ≤150 字） |
+| `docs/dreampowers/set/world/*.md` | 自由命名 | dp-set-concept | 世界逻辑与背景 |
+| `docs/dreampowers/set/concept/<name>.md` | 一概念一文件 | dp-set-concept | 概念源文件 |
+| `docs/dreampowers/set/character/<name>.md` 或 `docs/dreampowers/set/character/<name>/` | 一角色一文件或一目录 | dp-set-concept | 角色源文件 |
+| `docs/dreampowers/outlines/outline-*.md` | outline-YYYY-MM-DD.md | dp-set-outline | 大纲文件 |
+| `docs/dreampowers/outlines/review-*.md` | review-consistency-*.md | dp-review-consistency | 全书审查报告 |
+| `docs/dreampowers/chapters/chapter-NNN/spec.md` | 固定 | dp-set-outline（框架）+ dp-chapter-draft（蓝图） | 章节 spec（七节：概念预算/门控标准/概念依赖/读者评估/改进要求/门控评估结果/写作蓝图） |
+| `docs/dreampowers/chapters/chapter-NNN/draft.md` | 固定 | dp-chapter-draft | 章节草稿 |
+| `docs/dreampowers/chapters/chapter-NNN/review.md` | 固定 | dp-review-consistency | 章节审查报告 |
+| `docs/dreampowers/chapters/chapter-NNN/tuning.md` | 固定 | dp-tool-research | 作者调优指令（可选） |
+| `docs/dreampowers/chapters/chapter-NNN/adult.md` | 固定（链接或独立） | dp-set-outline | 成人场景偏好（可选） |
+| `docs/dreampowers/release/chapter-NNN.md` | NNN 三位数章节号 | dp-chapter-draft | 终稿 |
+| `docs/dreampowers/release/chapter-NNN-TBD.md` | 同上 + TBD 后缀 | dp-chapter-draft | 待人工审阅终稿 |
+| `docs/dreampowers/input/*` | 任意 | 用户 | 导入原始数据（临时区） |
 
 ## 用户指令
 

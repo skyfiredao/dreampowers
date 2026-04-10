@@ -1,20 +1,20 @@
 # Dreampowers
 
-**[中文文档](README_zh.md)**
+**[中文文档](README_zh.md)** | **[Lite Version (for local small models)](lite/README.md)**
 
-A complete AI skill set for **Chinese novel writing**, built on the [oh-my-openagent](https://github.com/code-yeongyu/oh-my-openagent) framework. 13 specialized skills covering every stage of fiction creation, from story ideation to manuscript completion, with core innovations in **preventing worldbuilding info-dumps**, **reader-perspective testing**, and **AI-flavor elimination**.
+A complete AI skill set for **Chinese novel writing**, built on the [oh-my-openagent](https://github.com/code-yeongyu/oh-my-openagent) framework. 14 specialized skills covering every stage of fiction creation, from story ideation to manuscript completion, with core innovations in **preventing worldbuilding info-dumps**, **reader-perspective testing**, and **AI-flavor elimination**.
 
 ## What It Does
 
 Dreampowers provides a disciplined, skill-driven workflow for writing Chinese fiction with AI. Instead of dumping all worldbuilding details into chapter one, it enforces gradual reveal through quantified rules and multi-stage review.
 
-- **13 specialized skills** covering the full fiction writing lifecycle
+- **14 specialized skills** covering the full fiction writing lifecycle
 - **Three-stage review** for every chapter (plot, reveal check, prose)
 - **External review loop**: reader + consistency review after three-stage pass, up to 3 iterations with TBD fallback for human review
 - **Six Iron Rules** preventing info-dumps with zero-tolerance enforcement
 - **Foreshadowing tracking** of setup/payoff across the entire manuscript
 - **Scene-type directing** with sub-modes for action, emotional, and dialogue scenes
-- **Four continuous writing modes**: per-chapter confirmation, batch N chapters, pause-at-act-break, full-auto
+- **Four continuous writing modes**: per-chapter confirmation, batch N chapters, pause-at-volume-break, full-auto
 - **Narrative timeline techniques**: sequential/reverse/interpolated/supplementary with POV selection rules
 - **Description methodology**: camera-language system integrated into scene directing
 - **External content import**: bring in existing world set, character cards, outlines, and handwritten chapters
@@ -33,17 +33,17 @@ Dreampowers provides a disciplined, skill-driven workflow for writing Chinese fi
 | Skill | Purpose |
 |---|---|
 | `dp-using-dreampowers` | Entry skill: mode switching, skill routing, workflow overview |
-| `dp-tool-research` | Story premise brainstorming, logline formula, platform comparison, internet-assisted worldbuilding research, author tuning |
+| `dp-tool-research` | Story premise brainstorming, one-line story summary formula, story naming, platform comparison, internet-assisted worldbuilding research, author tuning |
 | `dp-set-style` | Work-level writing style definition via 7-dimension questionnaire, style reference library (54+ authors across 9 genres), generates style.md voice profile |
 | `dp-set-concept` | World/character set with iceberg annotations (50%+ underwater), concept isolation via file-level physical separation, story-level timeline construction, external content import |
-| `dp-set-outline` | Act/chapter structure, 5 models, 6 iron rules with concept budget, foreshadowing tracking, theme weaving, narrative timeline techniques, POV rules, mid-story outline revision |
+| `dp-set-outline` | Volume/chapter structure, 4 models, 6 iron rules with concept budget, foreshadowing tracking, theme weaving, narrative timeline techniques, POV rules, mid-story outline revision |
 
 ### Chapter Skills (Writing Phase)
 
 | Skill | Purpose |
 |---|---|
-| `dp-chapter-draft` | Chapter writing with pre-draft gate, 3-stage review, 4 continuous writing modes, timeline execution, handwritten chapter integration, era-accurate writing (period-correct objects and perspective), outline-as-skeleton discipline |
-| `dp-chapter-summary` | Plain-text chapter summary (≤100 chars, no formatting) from `release/chapter-NNN.md` only, for cross-chapter continuity |
+| `dp-chapter-draft` | Chapter writing with pre-draft gate, 3-stage review, 4 continuous writing modes, timeline execution, handwritten chapter integration, era-accurate writing (period-correct objects and perspective), outline-as-framework discipline |
+| `dp-chapter-summary` | Plain-text chapter summary (≤150 chars, no formatting) from `docs/dreampowers/release/chapter-NNN.md` only, for cross-chapter continuity |
 | `dp-chapter-direct` | Scene-type directing (action/emotional/dialogue sub-modes) + narrative pacing control, tension-relief law, camera-language description methodology |
 | `dp-chapter-adult` | **Opt-in**: Adult scene writing with sensory completeness, narrative integrity framework, two-tier system (softcore/hardcore), user-defined `adult.md` preferences |
 
@@ -52,14 +52,15 @@ Dreampowers provides a disciplined, skill-driven workflow for writing Chinese fi
 | Skill | Purpose |
 |---|---|
 | `dp-character-style` | Character voice profiles, name-cover test, dialogue rules, subtext crafting |
-| `dp-tool-version` | Git-based version management: structured commits, milestone tags, rollback, diff comparison |
+| `dp-tool-version` | Git-based version management: structured commits, rollback, diff comparison |
 
 ### Review Skills
 
 | Skill | Purpose |
 |---|---|
 | `dp-review-reader` | Reader-perspective experience testing: page-turning desire, cognitive load, empathy verification, pacing feel |
-| `dp-review-consistency` | Cross-chapter consistency verification (9 dimensions) + prose revision and AI-flavor detection/elimination + final completion checklist with full-book consistency scan |
+| `dp-review-consistency` | Cross-chapter consistency verification (9 dimensions) + revision suggestions and AI-flavor detection/elimination |
+| `dp-review-final-report` | Full-book final report: global consistency scan across all released chapters against worldbuilding, characters, outline, and timeline (human-triggered, post-completion) |
 
 ## Key Innovations
 
@@ -67,18 +68,18 @@ Dreampowers provides a disciplined, skill-driven workflow for writing Chinese fi
 
 Six Iron Rules enforced with zero tolerance:
 
-1. **CURIOSITY_BEFORE_EXPLANATION**: Mystery first, answers later
-2. **SENSE_BEFORE_SYSTEM**: Sensory experience before rules explanation
-3. **EXPAND_DONT_ADD**: Deepen existing concepts before introducing new ones
-4. **CONCEPT_BUDGET**: Ch.1 max 3 new concepts (can be 0), subsequent max 2/chapter (can be 0)
-5. **NO_NARRATOR_LECTURES**: All world info through character action/dialogue only
-6. **JUST_IN_TIME**: Reveal only what serves the current conflict
+1. Mystery first, answers later
+2. Sensory experience before rules explanation
+3. Deepen existing concepts before introducing new ones
+4. Ch.1 max 3 new concepts (can be 0), subsequent max 2/chapter (can be 0)
+5. All world info through character action/dialogue only
+6. Reveal only what serves the current conflict
 
 ### Foreshadowing Tracking
 
 Individual Markdown files in `docs/dreampowers/tracking/` (prefixed with `thread-`) tracking all foreshadowing threads with:
 - Thread recovery pacing determined by outline planning, verified by consistency review
-- Claremont Coefficient (CC = introduced - resolved), warning at CC > 2
+- Claremont Coefficient (CC = planted - resolved), warning at CC > 2
 - Overdue thread detection
 
 ### Concept Isolation (dp-set-concept)
@@ -87,11 +88,11 @@ Physical file-level isolation preventing AI from seeing future worldbuilding con
 
 - **One concept per file** in `docs/dreampowers/set/concept/`
 - **One character per file or directory** in `docs/dreampowers/set/character/`
-- **Chapter workspace folders** (`docs/dreampowers/chapters/chapter-NNN/`) as fully self-contained writing units
-- **Chapter folders contain**: symlinks to concepts/characters/foreshadowing threads + `spec.md` (concept budget, gating criteria, dependency graph, reader assessment requirements)
+- **Chapter folders** (`docs/dreampowers/chapters/chapter-NNN/`) as fully self-contained writing units
+- **Chapter folders contain**: symlinks to concepts/characters/foreshadowing threads + `spec.md` (7-section chapter spec: outline-stage framework §1-5 + Pre-Draft Gate evaluation §6 + self-contained writing blueprint §7)
 - **Iron rules** symlinked from `docs/dreampowers/tracking/iron-rules.md` into each chapter folder
 - **Previous chapter summaries** symlinked (1-3 prior chapters as needed) for continuity
-- **AI reads only the chapter folder contents** during writing, never the source directories directly
+- **Pre-Draft Gate** reads all chapter folder materials, distills them into `spec.md` §6-7, user confirms, then **writing reads only `spec.md`**
 - **Serial chapter writing**: chapters must be written one at a time, in order
 
 ### Three-Stage Chapter Review
@@ -105,7 +106,7 @@ Every chapter passes through three sequential review stages:
 
 After passing the three-stage review, every chapter enters an external review loop:
 1. **Reader review** (dp-review-reader): cold-reader experience testing across four dimensions
-2. **Consistency review** (dp-review-consistency): nine-dimension consistency check + prose revision with AI-flavor detection + writing style verification against style.md
+2. **Consistency review** (dp-review-consistency): nine-dimension consistency check + revision suggestions with AI-flavor detection + writing style verification against style.md
 3. **Fix and repeat**: issues from both reports are merged and fixed, then the loop repeats (max 3 iterations)
 4. **TBD fallback**: if issues persist after 3 iterations, the release file is saved as `chapter-NNN-TBD.md` for human review
 
@@ -119,7 +120,7 @@ Integrated across skills for consistent technique application:
 
 ### Continuous Writing and Outline Revision
 
-- **Four writing modes**: per-chapter confirmation (default), batch N chapters, pause-at-act-break, full-auto (with quality gate)
+- **Four writing modes**: per-chapter confirmation (default), batch N chapters, pause-at-volume-break, full-auto (with quality gate)
 - **Mid-story outline revision**: 7-step freeze-and-revise workflow
 
 ### Reader-Perspective Testing (dp-review-reader)
@@ -144,6 +145,7 @@ Quantified pattern matching across 6 layers to eliminate AI writing habits:
 
 ## Prerequisites
 
+- [Git](https://git-scm.com/) (for manuscript version management via `dp-tool-version`)
 - [OpenCode](https://opencode.ai) with [oh-my-openagent](https://github.com/code-yeongyu/oh-my-openagent) installed
 
 ## Installation
@@ -152,7 +154,7 @@ Quantified pattern matching across 6 layers to eliminate AI writing habits:
 # Clone or copy the skill_dreampowers directory
 cd skill_dreampowers
 
-# Install default skills (12 skills, excludes opt-in)
+# Install default skills (13 skills, excludes opt-in)
 chmod +x install.sh
 ./install.sh
 
@@ -188,7 +190,7 @@ This activates the Dreampowers routing table. The AI will now use `dp-*` skills 
 我想写一个仙侠小说
 ```
 
-The AI loads `dp-tool-research` and walks you through story premise brainstorming (genre, logline, platform fit). After you confirm a premise (stored as `overview.md`), it transitions automatically:
+The AI loads `dp-tool-research` and walks you through story premise brainstorming (genre, one-line story summary, platform fit). After you confirm a premise (stored as `overview.md`), it transitions automatically:
 
 ```
 dp-tool-research --> dp-set-style --> dp-set-concept --> dp-set-outline --> dp-chapter-draft (loop)
@@ -225,7 +227,7 @@ AI 写到了第5章，第6到第8章是我自己写的，请接入后从第9章�
 
 The AI will:
 
-1. Create chapter workspace folders for your chapters
+1. Create chapter folders for your chapters
 2. Scan for foreshadowing threads and create/update tracking files
 3. Run continuity checking against existing chapters
 4. Generate chapter summaries via `dp-chapter-summary`
@@ -242,7 +244,7 @@ Before the first chapter (or at any chapter break), the AI asks you to choose a 
 |---|---|---|
 | **Per-chapter confirmation** (default) | Write, 3-stage review, you confirm, next chapter | Fine-grained control over every chapter |
 | **Batch N chapters** | Write N chapters (each still reviewed), deliver all at once | Batch progress, review later |
-| **Pause at act break** | Write until the current act ends, then pause | Managing progress by story arcs |
+| **Pause at volume break** | Write until the current volume ends, then pause | Managing progress by story volumes |
 | **Full-auto** | Write all remaining chapters, deliver complete draft | Maximum trust in the workflow |
 
 Mode switches take effect immediately. You can change anytime.
@@ -266,7 +268,7 @@ To resume:
 ### Revising the Outline Mid-Story
 
 ```
-第二幕的走向不对，我想改大纲
+第三章的走向不对，我想改大纲
 ```
 
 This triggers the 7-step outline revision workflow in `dp-set-outline`.
@@ -298,7 +300,7 @@ After reading completed chapters, you may want to adjust the direction of upcomi
 作者调优
 ```
 
-The AI loads `dp-tool-research` in author tuning mode, walks you through which unwritten chapters to adjust, collects your feedback (pacing, foreshadowing timing, character focus, tone shifts, etc.), and writes a `tuning.md` directive file into each target chapter's workspace folder. The `tuning.md` takes priority over outline defaults during drafting — only the Iron Rules outrank it.
+The AI loads `dp-tool-research` in author tuning mode, walks you through which unwritten chapters to adjust, collects your feedback (pacing, foreshadowing timing, character focus, tone shifts, etc.), and writes a `tuning.md` directive file into each target chapter's folder. The `tuning.md` takes priority over outline defaults during drafting — only the Iron Rules outrank it.
 
 Already-completed chapters are not affected; use the revision workflow for those.
 
@@ -306,7 +308,6 @@ Already-completed chapters are not affected; use the revision workflow for those
 
 ```
 提交当前进度
-给第一幕打个里程碑标签
 第3章改坏了，回滚到审查通过的版本
 ```
 
@@ -334,7 +335,7 @@ This deactivates all `dp-*` skills. Your manuscript and all Dreampowers artifact
 | Test reader experience | `用读者视角测试第N章` |
 | Remove AI flavor | `检查AI味` |
 | Tune upcoming chapters | `作者调优` / `我想调整后面的方向` |
-| Manage versions | `提交` / `打标签` / `回滚` |
+| Manage versions | `提交` / `回滚` |
 | Switch to coding | `Use skill using-superpowers` |
 
 ## Project Structure
@@ -357,49 +358,59 @@ skill_dreampowers/
     ├── dp-character-style/           # Character voice profiles + subtext
     ├── dp-tool-version/              # Git version management
     ├── dp-review-reader/             # Reader-perspective testing
-    ├── dp-review-consistency/        # Continuity + revision + final check
+    ├── dp-review-consistency/        # Continuity + revision suggestions
+    ├── dp-review-final-report/       # Full-book final report (post-completion)
     └── dp-chapter-adult/             # Opt-in: adult scene writing
 ```
 
 ## Artifact Paths
 
-When used in a project, Dreampowers creates the following directory structure:
+When used in a project, Dreampowers creates the following directory structure. The `docs/dreampowers/` directory is managed as an **independent Git repository** for manuscript versioning (operated by `dp-tool-version`).
+
+**First-time setup**:
+
+```bash
+mkdir -p docs/dreampowers/{input,set/{world,concept,character},tracking,timeline,outlines,chapters,release}
+cd docs/dreampowers
+git init
+```
 
 ```
-docs/dreampowers/
-├── input/                           # User-imported raw data (temp area)
+docs/dreampowers/                      # Independent Git repo (git init)
+├── input/                             # User-imported raw data (temp area)
 ├── set/
-│   ├── world/                       # World overview (logic, background)
-│   ├── concept/                     # Concept source files (one per file)
-│   └── character/                   # Character source files/directories
-├── tracking/                        # Cross-chapter persistent tracking
-│   ├── overview.md                  # One-line story summary
-│   ├── iron-rules.md               # Iron rules (symlinked to chapter folders)
-│   ├── style.md                     # Writing style profile (symlinked to chapter folders)
-│   ├── adult.md                     # Adult scene preferences (optional, symlinked to adult chapters only)
-│   └── thread-NNN-*.md              # Foreshadowing threads (thread- prefix)
-├── timeline/                        # Timeline + chapter summaries
-│   ├── timeline.md                  # Initial timeline definition
-│   └── summary-NNN.md              # Per-chapter summaries
-├── outlines/                        # Outlines + full-book reviews
+│   ├── world/                         # World overview (logic, background)
+│   ├── concept/                       # Concept source files (one per file)
+│   └── character/                     # Character source files/directories
+├── tracking/
+│   ├── overview.md                    # One-line story summary
+│   ├── iron-rules.md                  # Iron rules (symlinked to chapter folders)
+│   ├── style.md                       # Writing style profile (symlinked to chapter folders)
+│   ├── adult.md                       # Adult scene preferences (optional, symlinked to adult chapters only)
+│   ├── thread-NNN-*.md                # Foreshadowing threads (thread- prefix)
+│   └── deferred-threads.md            # Deferred threads for sequels (dp-review-consistency output)
+├── timeline/
+│   ├── timeline.md                    # Initial timeline definition
+│   └── summary-NNN.md                 # Per-chapter summaries
+├── outlines/
 │   ├── outline-*.md
 │   └── review-*.md
-└── chapters/                        # Chapter workspaces
-    └── chapter-NNN/
-        ├── spec.md                 # Metadata (budget, gating, dependencies)
-        ├── draft.md                 # Draft (work in progress)
-        ├── review.md                # Chapter-level review report
-        ├── tuning.md                # Author tuning directives (optional, high priority when present)
-        ├── adult.md                 # Adult scene preferences (optional, chapter-level overrides global)
-        ├── *.md -> set/concept/*    # Concept symlinks
-        ├── *.md -> set/character/*  # Character symlinks
-        ├── thread-*.md -> tracking/*# Foreshadowing symlinks
-        ├── iron-rules.md -> tracking/iron-rules.md
-        ├── style.md -> tracking/style.md
-        └── summary-*.md -> timeline/summary-*.md  (prev 1-3 chapters)
-
-release/                              # Final versions
-└── chapter-NNN.md
+├── chapters/
+│   └── chapter-NNN/
+│       ├── spec.md                    # Chapter spec (§1-5 framework from outline + §6-7 writing blueprint from Pre-Draft Gate)
+│       ├── draft.md                   # Draft (work in progress)
+│       ├── review.md                  # Chapter-level review report
+│       ├── tuning.md                  # Author tuning directives (optional, high priority when present)
+│       ├── adult.md                   # Adult scene preferences (optional, chapter-level overrides global)
+│       ├── *.md -> set/concept/*      # Concept symlinks
+│       ├── *.md -> set/character/*    # Character symlinks
+│       ├── thread-*.md -> tracking/*  # Foreshadowing symlinks
+│       ├── iron-rules.md -> tracking/iron-rules.md
+│       ├── style.md -> tracking/style.md
+│       └── summary-*.md -> timeline/summary-*.md  (prev 1-3 chapters)
+└── release/
+    ├── chapter-NNN.md                 # Final versions
+    └── final_report.md                # Full-book final report (dp-review-final-report output)
 ```
 
 Chapter folders (`docs/dreampowers/chapters/chapter-NNN/`) are fully self-contained writing units. During writing, the AI reads only the chapter folder contents, never the source directories directly. Only invisible information is guaranteed unused.

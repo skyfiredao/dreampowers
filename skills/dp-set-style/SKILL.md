@@ -17,9 +17,7 @@ description: Use when defining work-level prose style before worldbuilding, afte
 
 必须已完成 `dp-tool-research`，且 `docs/dreampowers/tracking/overview.md` 存在并已通过用户确认。
 
-<HARD-GATE>
-在确认故事蓝本存在之前，禁止开始风格问卷。没有蓝本中的类型、基调和目标读者信息，风格建议就是无源之水。
-</HARD-GATE>
+**硬性约束：** 在确认故事蓝本存在之前，禁止开始风格问卷。没有蓝本中的类型、基调和目标读者信息，风格建议就是无源之水。
 
 ## 清单
 
@@ -30,7 +28,7 @@ description: Use when defining work-level prose style before worldbuilding, afte
 - [ ] 展示候选作者列表，询问用户是否有参考偏好
 - [ ] 执行七维风格问卷（逐题提问，每题一条消息）
 - [ ] 生成风格档案（`style.md`）
-- [ ] 若类型为情色且 `dp-chapter-adult` 已安装，将情色风格描述写入 `adult.md` 的"写作风格"部分
+- [ ] 若类型为情色且 `dp-chapter-adult` 已安装（即 `~/.config/opencode/skills/dp-chapter-adult` 目录存在），将情色风格描述写入 `adult.md` 的"写作风格"部分
 - [ ] 用户确认风格档案
 - [ ] 存储至 `docs/dreampowers/tracking/style.md`
 - [ ] 过渡到 `dp-set-concept`
@@ -176,7 +174,7 @@ description: Use when defining work-level prose style before worldbuilding, afte
 
 ### 情色类型特殊处理
 
-当故事蓝本的类型为**情色**或包含情色元素，且 `dp-chapter-adult` 已安装时：
+当故事蓝本的类型为**情色**或包含情色元素，且 `dp-chapter-adult` 已安装（即 `~/.config/opencode/skills/dp-chapter-adult` 目录存在）时：
 
 1. 风格问卷照常执行七维问卷，生成全局 `style.md`（用于非成人场景的常规写作）
 2. 情色参考作者的匹配结果和用户选择**不写入 `style.md`**
@@ -184,6 +182,8 @@ description: Use when defining work-level prose style before worldbuilding, afte
 4. `adult.md` 中的写作风格仅在成人场景中生效，不污染全局风格档案
 
 如果 `adult.md` 尚不存在（用户尚未执行 `dp-set-outline`），将风格描述暂存，在 `dp-set-outline` 创建 `adult.md` 时自动填入。如果 `adult.md` 已存在，直接写入其"写作风格"部分。
+
+> **注意：** dp-chapter-adult 中的"禁止隐喻替代直接描写"仅适用于成人场景中用隐喻回避身体描写的情况，不影响风格层面的隐喻丰富策略。
 
 **范例段落的要求：**
 - 按照七维参数和可执行指令写一段 200 字左右的示范
@@ -200,10 +200,9 @@ description: Use when defining work-level prose style before worldbuilding, afte
 风格档案在写作指令优先级链中的位置：
 
 ```
-铁律 > tuning.md > style.md > 大纲默认设定 > spec.md
+优先级链详见 dp-tool-research。
 ```
 
-- **铁律**不可违反，即使与风格档案冲突（但实际上几乎不会冲突）
 - **tuning.md**（作者调优）可以覆盖风格档案中的个别指令（如"本章例外，加大心理描写"）
 - **style.md** 覆盖大纲中的一般性风格描述
 - 风格档案是**作品级**的，对所有章节生效（除非被 tuning.md 局部覆盖）
@@ -216,8 +215,8 @@ description: Use when defining work-level prose style before worldbuilding, afte
 
 1. **诊断**：确认是本章个例问题还是作品级风格需要修改
 2. **章节级调整**：在该章的 `tuning.md` 中写入风格微调指令（如"本章语言收着点，比喻减半，对话比重提升到 60%"）。tuning.md 优先级高于 style.md，写入即生效
-3. **作品级修改**：如果多章都出现同样的风格问题，说明 style.md 本身需要修订。此时重新运行本技能的问卷流程，更新 `tracking/style.md`。更新后提示用户已完成章节中哪些可能受影响，由用户决定是否重写
-4. **重写**：调整完成后，调用 `skill("dp-chapter-draft")` 即可。Pre-Draft Gate 会读取更新后的风格栈（style.md + tuning.md）
+3. **作品级修改**：如果多章都出现同样的风格问题，说明 style.md 本身需要修订。此时重新运行本技能的问卷流程，更新 `docs/dreampowers/tracking/style.md`。更新后提示用户已完成章节中哪些可能受影响，由用户决定是否重写
+4. **重写**：调整完成后，调用 `skill("dp-chapter-draft")` 即可。草稿预审会读取更新后的风格栈（style.md + tuning.md）
 
 ## 存储路径
 
@@ -234,7 +233,7 @@ docs/dreampowers/
         └── ...
 ```
 
-风格档案存储在 `tracking/` 目录，与 `iron-rules.md` 和 `overview.md` 同级。通过符号链接出现在每个章节工作区中，由 `dp-set-outline` 在创建章节文件夹时添加。
+风格档案存储在 `docs/dreampowers/tracking/` 目录，与 `iron-rules.md` 和 `overview.md` 同级。通过符号链接出现在每个章节文件夹中，由 `dp-set-outline` 在创建章节文件夹时添加。
 
 ## 风格参考库
 
@@ -327,9 +326,9 @@ docs/dreampowers/
 |------|------|------|
 | 上游 | `dp-tool-research` | 接收故事蓝本（类型、基调、目标读者），作为风格匹配输入 |
 | 下游 | `dp-set-concept` | 风格档案确认后进入世界观设定 |
-| 被引用 | `dp-chapter-draft` | Pre-Draft Gate 读取 `style.md`，作为写作基准 |
-| 被引用 | `dp-review-consistency` | 散文修订以 `style.md` 为风格基线 |
-| 被引用 | `dp-set-outline` | 创建章节工作区时添加 `style.md` 符号链接 |
+| 被引用 | `dp-chapter-draft` | 草稿预审读取 `style.md`，作为写作基准 |
+| 被引用 | `dp-review-consistency` | 修订建议以 `style.md` 为风格基线 |
+| 被引用 | `dp-set-outline` | 创建章节文件夹时添加 `style.md` 符号链接 |
 | 协作 | `dp-chapter-adult` | 情色类型的风格结果写入 `adult.md` 的"写作风格"部分，不写入 `style.md` |
 
 ## 反模式

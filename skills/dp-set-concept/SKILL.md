@@ -17,7 +17,7 @@ description: Use when building world settings, creating character cards, importi
 
 ## 核心原则
 
-**冰山原则**：你构建的世界有 100% 的深度，但读者在开篇只看到 20-30%。剩下的 70-80% 藏在水面下，通过后续章节逐步浮现。这不是偷懒，是纪律。
+**冰山原则**：你构建的世界有 100% 的深度，但读者在开篇只看到一部分。冰山比例详见下方"冰山标注规则"章节。这不是偷懒，是纪律。
 
 **物理隔离**：AI 看不到的东西，它就不会使用。本技能完成后，所有设定都拆分为独立文件，通过目录和符号链接控制可见范围。不使用任何索引文件、清单文件或注册表。**目录本身就是真相：文件存在即可用，符号链接存在即可见。**
 
@@ -32,27 +32,17 @@ description: Use when building world settings, creating character cards, importi
 - [ ] 创建角色关系图谱（简明文字描述）
 - [ ] 定义故事特有术语表
 - [ ] 标注"冰山水下"内容
-- [ ] 构建故事级时间线（逐层递进：自动提取锚点 → 推导时间骨架 → 关键节点确认 → 锁定存储至 `timeline/timeline.md`）
-- [ ] 拆分世界观概念为独立文件 → `set/concept/`
-- [ ] 拆分角色卡为独立文件或目录 → `set/character/`
-- [ ] 写入世界观整体描述 → `set/world/`
+- [ ] 构建故事级时间线（逐层递进：自动提取锚点 → 推导时间框架 → 关键节点确认 → 锁定存储至 `docs/dreampowers/timeline/timeline.md`）
+- [ ] 拆分世界观概念为独立文件 → `docs/dreampowers/set/concept/`
+- [ ] 拆分角色卡为独立文件或目录 → `docs/dreampowers/set/character/`
+- [ ] 写入世界观整体描述 → `docs/dreampowers/set/world/`
 - [ ] 审查：派遣子 agent 检查自洽性
 - [ ] 用户确认
 - [ ] 过渡到 `dp-set-outline`
 
 ## 信息收集方式
 
-**每个提问都提供三种回答方式：**
-
-1. **导入文件** — 用户已有相关文档或素材，放入 `docs/dreampowers/input/` 后导入
-2. **输入** — 用户口头描述或手动输入
-3. **不确定** — 用户没有想法，由 AI 基于已有信息提出建议
-
-示例提问格式：
-> 力量体系是什么样的？
-> - 📄 **导入**：如果你有相关的设定文档，放到 input/ 目录后告诉我
-> - ✏️ **输入**：用你自己的话描述
-> - 🤷 **不确定**：我根据故事蓝本来提建议
+信息收集方式详见 dp-tool-research 中的三种回答方式定义。
 
 ## 三种模式
 
@@ -98,7 +88,7 @@ description: Use when building world settings, creating character cards, importi
 3. **冰山标注**：对导入内容施加冰山标注
    - 默认：所有导入内容初始标记为"水面上"
    - AI 提议哪些应沉入"水面下"（秘密、体系上限、会破坏悬念的内容）
-   - 强制执行 50%+ 水下规则
+   - 标注结果须符合 50%+ 水下规则
 
 4. **自洽性快检**：文档内部矛盾 + 与已有设定的冲突，标记但不自动修复
 
@@ -108,13 +98,13 @@ description: Use when building world settings, creating character cards, importi
 - 不符合模板的内容绝不能无声丢弃，保留在"补充信息"区域
 - 缺失字段绝不能擅自脑补，标记"待补充"交由用户决定
 - 导入到已有设定时，必须标注哪些是新增、哪些与现有条目冲突
-- 原始导入文件保留在 `input/` 目录不动
+- 原始导入文件保留在 `docs/dreampowers/input/` 目录不动
 
 ### 章节稿件导入
 
 当导入内容包含章节稿件（用户手写的章节），执行以下处理：
 
-1. **元数据头注入**：为每个章节文件添加标准元数据头，保存至章节工作区 `chapters/chapter-NNN/draft.md`
+1. **元数据头注入**：为每个章节文件添加标准元数据头，保存至章节文件夹 `docs/dreampowers/chapters/chapter-NNN/draft.md`
 
 ```markdown
 <!-- 
@@ -132,7 +122,7 @@ review_status: imported
 ```
 
 2. **伏笔回溯**：扫描章节正文，为识别到的伏笔创建 `docs/dreampowers/tracking/thread-NNN-描述性名称.md`
-3. **连续性校验**：调用 `skill("dp-review-consistency")` 检查连续性
+3. **连续性简化校验**：调用 `skill("dp-review-consistency")` 做概念隔离维度的快速核查（非完整连续性检查，仅检查导入章节与已有设定之间的概念冲突）
 4. **续写衔接**：整理末章结尾状态，生成续写指令卡
 
 **续写指令卡格式**：
@@ -143,7 +133,7 @@ review_status: imported
 - **起始章节**：第 [N+M+1] 章
 - **前章结尾状态**：[角色位置、情绪状态、场景状态]
 - **未解决冲突**：[列表]
-- **活跃伏笔线索**：[从 tracking/ 中 status=active 的 thread-* 文件提取]
+- **活跃伏笔线索**：[从 docs/dreampowers/tracking/ 中 status=active 的 thread-* 文件提取]
 - **角色风格备注**：[手写章节中展现的角色风格特征]
 ```
 
@@ -268,7 +258,7 @@ review_status: imported
 
 ## 故事级时间线
 
-世界观和角色设定完成后，在拆分文件之前，必须构建**故事级时间线**。故事级时间线定义故事的时间骨架——年代、时间跨度、关键日期节点，为后续大纲规划提供时间框架。
+世界观和角色设定完成后，在拆分文件之前，必须构建**故事级时间线**。故事级时间线定义故事的时间框架——年代、时间跨度、关键日期节点，为后续大纲规划提供时间基准。
 
 **与章节级时间线手法的区分：**
 
@@ -286,16 +276,16 @@ review_status: imported
 
 从已完成的素材中自动提取时间信息：
 
-1. 从故事蓝本（`tracking/overview.md`）提取：故事起始时间、结束时间、核心事件时间
-2. 从世界规则（`set/world/history.md`）提取：历史大事件的时间节点
+1. 从故事蓝本（`docs/dreampowers/tracking/overview.md`）提取：故事起始时间、结束时间、核心事件时间
+2. 从世界规则（`docs/dreampowers/set/world/history.md`）提取：历史大事件的时间节点
 3. 从角色卡提取：角色年龄、关键经历发生时间、角色间年龄差
 4. 从概念文件提取：涉及时间属性的概念（如"十年大劫"、"科举周期"）
 
 提取完成后，整理为时间锚点清单，**不暂停，直接进入第二层**。
 
-#### 第二层：自动推导时间骨架
+#### 第二层：自动推导时间框架
 
-基于锚点推导完整的故事时间骨架：
+基于锚点推导完整的故事时间框架：
 
 1. **时间跨度**：故事主线覆盖的时间范围
 2. **时间密度分布**：哪些时段是故事重点（密集叙事），哪些是留白（时间跳跃）
@@ -320,7 +310,7 @@ review_status: imported
 
 #### 第四层：锁定并存储
 
-用户确认后，生成正式的 `timeline/timeline.md` 文件并锁定。
+用户确认后，生成正式的 `docs/dreampowers/timeline/timeline.md` 文件并锁定。
 
 ### 时间线文件格式
 
@@ -375,7 +365,7 @@ created_by: dp-set-concept
 
 ### 世界观整体描述
 
-世界逻辑关系、大背景、基调等整体性描述写入 `set/world/`：
+世界逻辑关系、大背景、基调等整体性描述写入 `docs/dreampowers/set/world/`：
 
 ```
 docs/dreampowers/set/world/
@@ -543,8 +533,8 @@ docs/dreampowers/
 | 关系 | 技能 | 说明 |
 |------|------|------|
 | 上游 | `dp-tool-research` | 接收故事蓝本，可回调做考据 |
-| 上游 | `dp-set-style` | 接收风格档案（`tracking/style.md`），世界观描述的文笔遵循风格基线 |
-| 下游 | `dp-set-outline` | 设定拆分完成后进入大纲规划；故事级时间线（`timeline/timeline.md`）作为大纲的时间框架 |
+| 上游 | `dp-set-style` | 接收风格档案（`docs/dreampowers/tracking/style.md`）。设定文件内容与 style.md 无直接关联，风格仅在写作阶段生效 |
+| 下游 | `dp-set-outline` | 设定拆分完成后进入大纲规划；故事级时间线（`docs/dreampowers/timeline/timeline.md`）作为大纲的时间框架 |
 | 下游 | `dp-review-consistency` | 导入章节时调用做连续性校验 |
 | 协作 | `dp-character-style` | 手写章节导入时比对角色风格 |
 

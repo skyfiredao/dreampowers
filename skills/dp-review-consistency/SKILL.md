@@ -1,21 +1,20 @@
 ---
 name: dp-review-consistency
-description: Use when verifying narrative consistency across chapters, revising prose quality, detecting AI-flavored writing patterns, or performing final manuscript-wide inspection
+description: Use when verifying narrative consistency across chapters, revising prose quality, and detecting AI-flavored writing patterns
 ---
 
 <SUBAGENT-STOP>
 如果你是被派遣执行特定任务的子代理，跳过此技能。
 </SUBAGENT-STOP>
 
-# 连续性检查、散文修订与终检
+# 连续性检查与修订建议
 
-本技能覆盖三个层面：
+本技能覆盖两个层面：
 
 1. **连续性检查**（刚性）：逐维度验证叙事连续性，PASS/FAIL 二元判定
-2. **散文修订与AI味检测**（检测刚性，替换弹性）：文笔打磨 + AI味消除
-3. **终检**（刚性）：全书完成后的九项检查清单 + 最终连续性通检
+2. **修订建议与AI味检测**（检测刚性，替换弹性）：文笔打磨 + AI味消除
 
-三个层面可独立调用，也可按顺序串联执行。
+两个层面在外部审阅闭环中串联执行。
 
 ---
 
@@ -36,14 +35,11 @@ description: Use when verifying narrative consistency across chapters, revising 
 
 ## 适用时机
 
-- **外部审阅闭环（必选）**：章节通过 `dp-chapter-draft` 三阶段审查后，在外部审阅闭环中**紧随** `dp-review-reader` 执行。执行内容包括第一部分（连续性检查）和第二部分（散文修订与AI味检测，含对照 `style.md` 的写作风格检查）。闭环最多循环 3 次（详见 `dp-chapter-draft` 的外部审阅闭环章节）
-- 长时间中断后重新回到稿件时（超过 3 天未写作）
-- 大纲发生重大修改、需要回溯检查已写章节时
-- 合并多人写作片段时
+- **外部审阅闭环（必选）**：章节通过 `dp-chapter-draft` 三阶段审查后，在外部审阅闭环中**紧随** `dp-review-reader` 执行。执行内容包括第一部分（连续性检查）和第二部分（修订建议与AI味检测，含对照 `style.md` 的写作风格检查）。闭环最多循环 3 次（详见 `dp-chapter-draft` 的外部审阅闭环章节）
 
 ## 检查维度
 
-共九个维度，全部必检（第九维度仅在章节工作区存在 `adult.md` 时执行，否则标记 N/A）。
+共九个维度，全部必检（第九维度仅在章节文件夹存在 `adult.md` 时执行，否则标记 N/A）。
 
 ### 一、时间线连续性
 
@@ -107,27 +103,25 @@ description: Use when verifying narrative consistency across chapters, revising 
 遍历 `docs/dreampowers/tracking/` 目录下的所有伏笔文件（`thread-*.md`），检查：
 
 - 已植入的伏笔是否在本章被意外否定或矛盾
-- 本章新植入的伏笔是否已创建对应的伏笔文件（`tracking/thread-NNN-*.md`）
+- 本章新植入的伏笔是否已创建对应的伏笔文件（`docs/dreampowers/tracking/thread-NNN-*.md`）
 - 需要在本章推进的伏笔是否被遗漏
 - 长期未触及的伏笔线索是否超出其层级的预期回收范围
 
 ### 八、概念隔离一致性
 
-对照章节文件夹（`docs/dreampowers/chapters/chapter-NNN/`）检查：
+对照 spec.md 检查正文是否超出 spec 定义的范围：
 
-- 本章是否引用了章节文件夹中没有符号链接的概念？（如出现了目录中不存在链接的力量体系、社会结构等设定）
-- 本章是否出现了章节文件夹中没有符号链接的角色？（如提到了目录中没有对应链接的角色名字）
-- 复杂角色是否仅展示了章节文件夹中链接的特定时间线阶段的信息？（如本章只链接了 `lin-feng-before-war.md`，但文中泄露了角色在"灾变后"的能力或身份）
-- 本章 `spec.md` 标记为"新引入"的概念，是否确实在文中首次出现？（避免元数据与实际写作脱节）
-- 本章 `spec.md` 标记为"深化"的概念，是否确实在文中得到了深化展开？
+- 本章正文是否出现了 spec.md 中未列出的概念或角色？
+- spec.md 标记为"新引入"的概念，是否确实在文中首次出现？
+- spec.md 标记为"深化"的概念，是否确实在文中得到深化展开？
 
 ### 九、成人场景一致性
 
-**仅在章节工作区存在 `adult.md` 时执行。** 有 `adult.md` = 本章含成人场景。
+**仅在章节文件夹存在 `adult.md` 时执行。** 有 `adult.md` = 本章含成人场景。
 
-对照章节工作区的 `adult.md`（可能是符号链接到 `tracking/adult.md` 或章节级独立文件）逐项检查：
+对照章节文件夹的 `adult.md`（可能是符号链接到 `docs/dreampowers/tracking/adult.md` 或章节级独立文件）逐项检查：
 
-- **分级一致性**：场景描写是否符合 `adult.md` 中指定的默认分级（软性/硬核）？如果用户确认了分级切换，切换是否合理？
+- **分级一致性**：场景描写是否符合 `adult.md` 中用户选择的分级（软性/硬核）？如果用户确认了分级切换，切换是否合理？
 - **感官偏好**：重点描写的感官通道是否与 `adult.md` 中的偏好一致？弱化/省略的通道是否确实被弱化？
 - **角色偏好**：视角展开是否与 `adult.md` 中的角色偏好一致？角色语言和行为是否符合偏好要求？
 - **场景节奏**：铺垫、升温、高潮、余韵四阶段的节奏分配是否与 `adult.md` 中的偏好匹配？
@@ -139,7 +133,7 @@ description: Use when verifying narrative consistency across chapters, revising 
 
 ## 检查清单模板
 
-每章检查后填写以下模板。每个维度必须标注 PASS 或 FAIL，FAIL 必须附带具体问题描述。
+每章检查后填写以下模板。只列出存在问题的维度。未列出的维度视为通过。
 
 报告存储路径：`docs/dreampowers/chapters/chapter-NNN/review.md`
 
@@ -149,22 +143,6 @@ description: Use when verifying narrative consistency across chapters, revising 
 检查日期：[YYYY-MM-DD]
 检查范围：第[N]章 + 回溯至第[1]章
 
-## 检查结果总览
-
-| 维度 | 状态 | 问题数 |
-|------|------|--------|
-| 时间线连续性 | PASS/FAIL | N |
-| 空间连续性 | PASS/FAIL | N |
-| 角色状态追踪 | PASS/FAIL | N |
-| 世界观规则一致性 | PASS/FAIL | N |
-| 道具与物品追踪 | PASS/FAIL | N |
-| 揭示一致性 | PASS/FAIL | N |
-| 伏笔完整性 | PASS/FAIL | N |
-| 概念隔离一致性 | PASS/FAIL | N |
-| 成人场景一致性 | PASS/FAIL/N/A | N |
-
-## 总体判定：PASS / FAIL
-
 ## 问题明细
 
 ### [维度名]
@@ -173,9 +151,9 @@ description: Use when verifying narrative consistency across chapters, revising 
 - **关联章节**：第M章（矛盾来源）
 - **严重程度**：致命 / 重要 / 轻微
 
-## Claremont Coefficient
-- 已引入伏笔数：N
-- 已回收伏笔数：M
+## Claremont 系数
+- status=active 的伏笔数：N
+- status=resolved 的伏笔数：M
 - CC = N - M = [值]
 - 状态：健康 / 可控 / 警告
 ```
@@ -190,10 +168,10 @@ description: Use when verifying narrative consistency across chapters, revising 
 2. 对照已写章节，验证每条伏笔的植入/推进/回收记录与实际文本是否匹配
 3. 标记伏笔文件中有记录但文本中找不到对应内容的条目
 
-### Claremont Coefficient 检查
+### Claremont 系数检查
 
 ```
-CC = 已引入伏笔数 - 已回收伏笔数
+CC = status=active 的伏笔数 - status=resolved 的伏笔数
 ```
 
 | CC 值 | 状态 | 处置 |
@@ -214,40 +192,21 @@ CC = 已引入伏笔数 - 已回收伏笔数
 
 ## 连续性检查输入来源
 
-| 来源技能 | 读取内容 |
+| 来源 | 读取内容 |
 |---------|---------|
-| `dp-chapter-draft` | 已完成的章节稿件（`release/chapter-NNN.md`） |
-| `dp-set-concept` | 世界规则、角色设定（`docs/dreampowers/set/`） |
-| `dp-set-outline` | 揭示时间表、铁律约束、计划的情节事件、章节目标 |
-| 章节文件夹 | `docs/dreampowers/chapters/chapter-NNN/` 中的符号链接和 `spec.md` |
-| `dp-chapter-adult` | 章节工作区的 `adult.md`（存在时读取，用于第九维度检查） |
+| 章节文件夹 | `docs/dreampowers/chapters/chapter-NNN/draft.md`（当前章节草稿） |
+| 章节文件夹 | `docs/dreampowers/chapters/chapter-NNN/spec.md`（含写作蓝图） |
+| 章节文件夹 | `adult.md`（存在时读取，用于第九维度检查） |
+| 前序章节 | `docs/dreampowers/release/chapter-*.md`（已发布的前序章节，用于跨章对照） |
+| 伏笔场记 | `docs/dreampowers/tracking/thread-*.md`（全部伏笔文件，用于维度七伏笔完整性检查及 Claremont 系数计算） |
+
+> **注意**：写作阶段只读 spec.md。一致性检查读 draft.md + spec.md + 前序已发布章节。读者审阅（dp-review-reader）只读 `draft.md`，不读 spec.md。
 
 ### 产出
 
 - 章节连续性报告，存储路径：`docs/dreampowers/chapters/chapter-NNN/review.md`
-- 全书连续性报告，存储路径：`docs/dreampowers/outlines/review-consistency-*.md`
 - 本部分**不修改**任何稿件，仅输出报告
 - 如有维度 FAIL，在报告中标记，由写作者在下一轮 `dp-chapter-draft` 中修正
-
----
-
-## 连续性检查 Red Flags（STOP 信号）
-
-出现以下任一情况，立即停止后续章节的写作：
-
-| 信号 | 含义 |
-|------|------|
-| 同一角色在同一时间出现在两个地点 | 空间连续性严重破坏 |
-| 已死亡/离场的角色无交代地重新出现 | 角色状态追踪失败 |
-| 世界规则被情节需要临时推翻 | 世界观一致性崩溃 |
-| CC > 3 | 叙事债务失控，读者已无法追踪伏笔 |
-| 三个以上维度同时 FAIL | 稿件整体连续性存在结构性问题 |
-| 成人场景出现 `adult.md` 个人禁区元素 | 零容忍，立即 FAIL 并停止 |
-
-出现 Red Flag 后：
-1. 停止写作，不再进入下一章。
-2. 完成完整的连续性报告。
-3. 将报告提交给写作者，等待其修正后重新检查。
 
 ---
 
@@ -255,20 +214,17 @@ CC = 已引入伏笔数 - 已回收伏笔数
 
 严格按以下顺序执行，不可跳步。
 
-1. 读取目标章节稿件（`release/chapter-NNN.md`）
-2. 读取全部已有章节（回溯至第 1 章）
-3. 读取世界观设定（`docs/dreampowers/set/`）
-4. 读取揭示时间表
-5. 遍历 `docs/dreampowers/tracking/` 目录下的伏笔文件（`thread-*.md`）
-6. 读取大纲（`docs/dreampowers/outlines/`）
-7. 读取章节文件夹（`docs/dreampowers/chapters/chapter-NNN/` 中的符号链接和 `spec.md`）
-8. 如果章节工作区存在 `adult.md`，读取其内容（用于第九维度检查）
-9. 按九个维度逐一检查，每个维度独立判定 PASS/FAIL（第九维度无 `adult.md` 时标记 N/A）
-10. 计算 Claremont Coefficient
-11. 检测超期伏笔
-12. 填写检查清单模板，生成连续性报告
-13. 将报告保存到 `docs/dreampowers/chapters/chapter-NNN/review.md`
-14. 如有任何维度 FAIL 或触发 Red Flag，明确告知写作者
+1. 读取当前章节草稿（`docs/dreampowers/chapters/chapter-NNN/draft.md`）
+2. 读取章节文件夹中的 `spec.md`（用于对照写作蓝图与实际草稿）
+3. 读取前序已发布章节（`docs/dreampowers/release/chapter-*.md`，回溯至第 1 章）
+4. 遍历章节文件夹中链接的伏笔文件（`thread-*.md`）
+5. 如果章节文件夹存在 `adult.md`，读取其内容（用于第九维度检查）
+6. 按九个维度逐一检查，每个维度独立判定 PASS/FAIL（第九维度无 `adult.md` 时标记 N/A）
+7. 计算 Claremont 系数
+8. 检测超期伏笔
+9. 填写检查清单模板，生成连续性报告
+10. 将报告保存到 `docs/dreampowers/chapters/chapter-NNN/review.md`
+11. 如有任何维度 FAIL，明确告知写作者
 
 ```dot
 digraph continuity_checking {
@@ -276,10 +232,10 @@ digraph continuity_checking {
     node [shape=box, style=rounded, fontname="PingFang SC"];
 
     start [label="章节通过三阶段审查"];
-    read_ch [label="读取目标章节 +\n回溯全部已有章节"];
-    read_set [label="读取世界观设定\n+ 揭示时间表"];
-    read_tracking [label="遍历伏笔文件\n(tracking/thread-*.md)\n+ 大纲 + 章节文件夹"];
-    read_adult [label="读取 adult.md\n(章节工作区存在时)" shape=box style="rounded,dashed"];
+    read_draft [label="读取 draft.md + spec.md"];
+    read_prev [label="读取前序已发布章节\n(release/chapter-*.md)"];
+    read_tracking [label="遍历章节文件夹中的\n伏笔文件 (thread-*.md)"];
+    read_adult [label="读取 adult.md\n(章节文件夹存在时)" shape=box style="rounded,dashed"];
 
     d1 [label="维度一：时间线连续性"];
     d2 [label="维度二：空间连续性"];
@@ -291,22 +247,18 @@ digraph continuity_checking {
     d8 [label="维度八：概念隔离一致性"];
     d9 [label="维度九：成人场景一致性\n(无 adult.md 则 N/A)" style="rounded,dashed"];
 
-    cc [label="计算 Claremont Coefficient\n+ 超期伏笔检测"];
+    cc [label="计算 Claremont 系数\n+ 超期伏笔检测"];
     report [label="生成连续性报告\n保存至 chapters/chapter-NNN/review.md"];
 
     check_result [label="所有维度 PASS？" shape=diamond];
-    all_pass [label="报告标记 PASS\n可进入下一章" shape=doublecircle];
-    has_fail [label="报告标记 FAIL\n通知写作者修正" shape=octagon];
-    redflag [label="触发 Red Flag？" shape=diamond];
-    stop [label="STOP\n禁止进入下一章\n等待修正" shape=octagon];
+    all_pass [label="报告无问题\n可进入下一章" shape=doublecircle];
+    has_fail [label="报告有问题\n通知写作者修正" shape=octagon];
 
-    start -> read_ch -> read_set -> read_tracking -> read_adult;
+    start -> read_draft -> read_prev -> read_tracking -> read_adult;
     read_adult -> d1 -> d2 -> d3 -> d4 -> d5 -> d6 -> d7;
     d7 -> d8 -> d9;
     d9 -> cc -> report;
-    report -> redflag;
-    redflag -> stop [label="是"];
-    redflag -> check_result [label="否"];
+    report -> check_result;
     check_result -> all_pass [label="全部 PASS"];
     check_result -> has_fail [label="存在 FAIL"];
     has_fail -> all_pass [label="写作者修正后\n重新检查", style=dashed];
@@ -317,39 +269,36 @@ digraph continuity_checking {
 
 ## 连续性检查终止状态
 
-- **全部 PASS**：在外部审阅闭环中，与 `dp-review-reader` 的结果合并判定。如果两份报告均无问题，章节可进入用户确认环节。
-- **存在 FAIL（无 Red Flag）**：在外部审阅闭环中，问题与 `dp-review-reader` 的问题汇总后统一修改，修改后重新进入闭环（最多 3 次）。独立调用时，修正后重新运行本技能的连续性检查。
-- **触发 Red Flag**：禁止进入下一章，必须先修正问题并重新通过全部九个维度检查。
+- **无问题**：在外部审阅闭环中，与 `dp-review-reader` 的结果合并判定。两份报告均无问题，章节可进入用户确认环节。
+- **有问题**：问题与 `dp-review-reader` 的问题汇总后统一修改，修改后重新检查（最多 3 次）。
 
 ---
 
-# 第二部分：散文修订与AI味检测消除
+# 第二部分：修订建议与AI味检测消除
 
-本部分包含两个层面：**散文修订**（弹性，根据文体灵活调整）和**AI味检测**（刚性，检测规则不可妥协）。替换策略和修订操作可以灵活调整，但检测本身必须严格执行。
+本部分包含两个层面：**修订建议**（弹性，根据文体灵活调整）和**AI味检测**（刚性，检测规则不可妥协）。替换策略和修订操作可以灵活调整，但检测本身必须严格执行。
 
 本部分同时覆盖两个维度：
 
-- **散文修订** = 文笔打磨（改善表达质量）。让文字更好。
+- **修订建议** = 文笔打磨（改善表达质量）。让文字更好。
 - **AI味检测与消除** = 改善表达真实性。让文字更真。
 
-**推荐使用顺序**：先运行AI味检测与消除流程（本部分后半段），再运行散文修订流程（本部分前半段）。也可以合并使用，但检测阶段必须独立完成，不能在打磨的同时"顺便"去AI味。
+**推荐使用顺序**：先运行AI味检测与消除流程（本部分后半段），再运行修订建议流程（本部分前半段）。也可以合并使用，但检测阶段必须独立完成，不能在打磨的同时"顺便"去AI味。
 
 与 `dp-chapter-draft` 三阶段审查的关系：Stage 3（文笔审查）是快速扫描，本部分提供深度检测和深度打磨。三阶段审查通过不代表没有AI味，AI味可以藏在"合格"的文字里。
 
-## 散文修订核心定位
+## 修订建议核心定位
 
-修订不是重写。修订是在内容、情节、结构全部定稿之后，对文字本身的精细打磨。不改变发生了什么，只让已经写好的东西读起来更好。
+修订建议不是重写，也不是直接修改稿件。本部分的产出是一份结构化的修订建议报告，标注每个维度的问题位置和具体修改方案。实际修改由写作技能（`dp-chapter-draft`）执行。
 
-你的工作对象是词语和句子，不是场景和情节。如果一个场景需要重写，那是 `dp-chapter-draft` 的工作。如果节奏需要大幅调整，那是 `dp-chapter-direct` 的工作。你打磨的是已经成型的文字，像匠人给家具上最后一层漆。
+你的审查对象是词语和句子，不是场景和情节。如果一个场景需要重写，那是 `dp-chapter-draft` 的工作。如果节奏需要大幅调整，那是 `dp-chapter-direct` 的工作。你审查的是已经成型的文字，产出修订建议供写作者采纳。
 
-## 散文修订适用时机
+## 修订建议适用时机
 
 - **外部审阅闭环中**：作为闭环的一部分，在 `dp-review-reader` 之后执行。含对照 `style.md` 的写作风格检查
 - 特定章节被标记为"文笔需要改善"时
-- 终检前的最后一道工序
 - 用户明确要求对某段文字做 prose-level 改善
 - 每章写完、三阶段审查通过之后，需要检查AI味时
-- 全书完成后的全稿扫描
 - 用户明确要求"检查AI味"或"这段读起来像AI写的"
 
 ## 修订维度
@@ -388,20 +337,20 @@ digraph continuity_checking {
 
 **结尾**：最后一句是否留有余味？是否避免了"总结陈词"式收尾（"那一天，他终于明白了..."）？章末钩子是否驱动读者翻页？
 
-## 修订原则
+## 修订建议原则
 
 1. **删 > 改 > 加**。能删就不改，能改就不加。好的修订让文字变少。如果修订后比原文更长，你在扩写
 2. **每句话必须挣得它的位置**。推进情节、揭示角色、建立氛围，三项至少占一项，否则删
 3. **杀死你的挚爱 (Kill Your Darlings)**。写得漂亮但不服务故事的句子就是装饰品，让读者欣赏文字而非沉浸故事。删掉它
-4. **修订不是重写**。改动一个场景 50% 以上的文字，停下来。回到 `skill("dp-chapter-draft")` 走完整流程
+4. **修订不是重写**。改动一个章节 50% 以上的文字，停下来。回到 `skill("dp-chapter-draft")` 走完整流程
 
-## 修订流程
+## 修订建议流程
 
-三遍通读法。每一遍只关注一个层面。
+三遍审查法。每一遍只关注一个层面，产出对应的修订建议。
 
-- **第一遍：删（Cut）**。只删除，不改写，不添加。这一遍结束后文字应明显变短。如果长度没变，你不够狠
-- **第二遍：强化（Strengthen）**。替换弱动词，消除重复，调整句式变化，确认感官描写到位。对照 `style.md` 风格档案的七维参数：叙事距离、句法节奏、感官密度、词汇层级、比喻策略、情感表达、对话比重，确保强化方向与风格基准一致
-- **第三遍：打磨（Polish）**。朗读感受音韵节奏，打磨过渡，锤炼开头结尾，确认阅读体验连贯自然。最终对照 `style.md` 的可执行风格指令和禁区做风格一致性终检
+- **第一遍：删（Cut）**。标记所有可删除的内容，说明删除理由。审查完成后建议的删除应让文字明显变短
+- **第二遍：强化（Strengthen）**。标记弱动词、重复、句式单调、感官缺失，提供具体替换方案。对照 `style.md` 风格档案的七维参数：叙事距离、句法节奏、感官密度、词汇层级、比喻策略、情感表达、对话比重，确保建议方向与风格基准一致
+- **第三遍：打磨（Polish）**。审查音韵节奏、过渡、开头结尾，标记问题并提供修改建议。最终对照 `style.md` 的可执行风格指令和禁区做风格一致性检查
 
 ```dot
 digraph revision_flow {
@@ -409,16 +358,16 @@ digraph revision_flow {
     node [shape=box, style=rounded];
 
     input [label="接收已通过三阶段审查的章节"];
-    cut [label="第一遍：删\n删除所有不必要的内容"];
-    cut_check [label="文字是否变短了？" shape=diamond];
-    cut_more [label="不够狠，继续删"];
-    strengthen [label="第二遍：强化\n动词/重复/句式/感官"];
-    polish [label="第三遍：打磨\n节奏/过渡/开头结尾"];
-    voice_check [label="角色风格是否完好？\n(对照 dp-character-style)" shape=diamond];
-    voice_fix [label="还原角色风格"];
-    rhythm_check [label="节奏意图是否完好？\n(对照 dp-chapter-direct)" shape=diamond];
-    rhythm_fix [label="还原节奏意图"];
-    done [label="修订完成\n提交用户确认" shape=doublecircle];
+    cut [label="第一遍：删\n标记所有可删除的内容"];
+    cut_check [label="标记的删除是否足够？" shape=diamond];
+    cut_more [label="审查不够彻底，继续标记"];
+    strengthen [label="第二遍：强化\n标记弱动词/重复/句式/感官问题\n提供替换方案"];
+    polish [label="第三遍：打磨\n审查节奏/过渡/开头结尾\n提供修改建议"];
+    voice_check [label="建议是否保护了角色风格？\n(对照 dp-character-style)" shape=diamond];
+    voice_fix [label="调整建议以保护角色风格"];
+    rhythm_check [label="建议是否保护了节奏意图？\n(对照 dp-chapter-direct)" shape=diamond];
+    rhythm_fix [label="调整建议以保护节奏意图"];
+    done [label="修订建议报告完成\n交付写作者执行" shape=doublecircle];
 
     input -> cut -> cut_check;
     cut_check -> cut_more [label="否"];
@@ -440,13 +389,13 @@ digraph revision_flow {
 
 AI 生成的中文小说有一种独特的"机器味"。不是某一个词用错了，而是整体散发出一种套路化的气息：比喻词像撒胡椒面一样到处都是，情感永远靠"他感到"三个字交代，排比三连像条件反射，每段结尾都来一句升华感悟。单独看哪一条都不算大问题，叠在一起就让读者的潜意识发出警报："这不是人写的。"
 
-本章节是专门的"去味"过滤器。它不管文笔好不好（那是上方散文修订部分的事），只管文字是否暴露了 AI 生成的痕迹。目标很明确：让文本读起来像人写的。
+本章节是专门的"去味"过滤器。它不管文笔好不好（那是上方修订建议部分的事），只管文字是否暴露了 AI 生成的痕迹。目标很明确：让文本读起来像人写的。
 
-**刚性声明**：以下检测规则不可妥协，每条规则对应具体的模式匹配和量化阈值，不得因"风格需要"而绕过。替换策略可以灵活调整，但检测本身必须严格执行。
+**刚性声明**：以下检测规则不可妥协。只要出现明显 AI 感，就必须标记并提出替换建议，不得因"风格需要"而绕过。替换策略可以灵活调整，但检测本身必须严格执行。
 
 ### AI味检测清单
 
-六个层面，逐一扫描。这是本章节的核心，每条规则都有具体的模式和阈值。
+六个层面，逐一扫描。这是本章节的核心，每条规则都有具体的模式。
 
 #### A. 词汇层面
 
@@ -528,40 +477,6 @@ AI 生成的中文小说有一种独特的"机器味"。不是某一个词用错
 
 **因果链条过度外显**。"因为A所以B，而B又导致了C"。技术文档追求因果逻辑的完整和外显，小说追求因果的隐含和自然。读者应该自己推导出因果关系，而不是被作者手把手领着走。
 
-### 量化检测规则
-
-硬性阈值。超过即标记，不接受"但这里是需要的"之类的辩解。如果确实需要，保留时必须给出具体理由。
-
-| 检测项 | 统计单位 | 阈值 | 超标则标记为 |
-|--------|---------|------|------------|
-| 比喻词（仿佛/宛如/犹如/好似/恰似） | 每千字 | ≤2 次 | 🔴 比喻词泛滥 |
-| 程度副词（深深/轻轻/缓缓/微微/默默/静静/淡淡） | 每千字 | ≤3 次 | 🔴 副词堆砌 |
-| 情感标签（感到/觉得/心中涌起/一股...攫住） | 每千字 | ≤1 次，目标 0 | 🔴 情感标签化 |
-| 排比结构（同一句式连续出现 3 次） | 每章 | ≤2 处 | 🟡 排比过度 |
-| 句长标准差 | 全章 | ≥3 字 | 🔴 机械节奏 |
-| "不是A，而是B"句式 | 每章 | ≤2 处 | 🟡 句式单调 |
-| 通感修辞 | 每千字 | ≤1 次 | 🟡 通感滥用 |
-| 感叹号 | 每千字 | ≤2 个 | 🟡 感叹号过多 |
-| 段尾感慨式总结 | 每章 | ≤1 处 | 🔴 AI味升华 |
-| AI万能形容词 | 每千字 | ≤1 个 | 🟡 词汇AI化 |
-| 连字符/长破折号（——/—/--） | 每章 | 0 个 | 🔴 英文标点入侵 |
-| Emoji 表情符号 | 每章 | 0 个 | 🔴 聊天体混入 |
-| Markdown 星号标记（**/**） | 每章 | 0 个 | 🔴 格式标记残留 |
-| HTML 实体字符（&nbsp;/&mdash;/&hellip; 等） | 每章 | 0 个 | 🔴 HTML 编码混入 |
-| 技术术语（基于/通过/实现/机制/体系/系统/构成/具备） | 每千字 | ≤1 个 | 🔴 技术语域污染 |
-| 定义式句型（X是一种Y/X由...组成/X的特点是） | 每章 | ≤1 处 | 🔴 百科语域污染 |
-| 被动/无主句（被称为/被认为/据说/一般认为） | 每千字 | ≤1 次 | 🟡 技术文体残留 |
-| 列举式说明（首先...其次.../第一...第二...） | 每章 | 0 处 | 🔴 报告体混入 |
-| 因果链条外显（因为A所以B而B又导致C） | 每千字 | ≤1 处 | 🟡 论文式因果 |
-| 伪古旧感（旧/老/褪色/泛黄/斑驳/锈迹/蒙尘修饰当时应新鲜的事物） | 每章 | 0 处 | 🔴 回忆滤镜 |
-| 时代物品穿帮（不属于故事年代的器物、食品、通讯方式等） | 每章 | 0 处 | 🔴 年代穿帮 |
-
-分级标准：
-
-- **🔴 红色**：必须修改。这些特征是AI味的核心标志。
-- **🟡 黄色**：建议修改。单独出现不致命，但累积会暴露AI痕迹。
-- **🟢 绿色**：可接受。在阈值范围内，或虽然超标但有充分理由。
-
 ### AI味替换策略
 
 检测是刚性的，替换是弹性的。以下是每个检测类别的推荐替换方向，具体操作可根据上下文灵活处理。
@@ -642,34 +557,31 @@ digraph deai_flow {
     scan [label="Step 1: 全文扫描\n逐条检测清单扫描\n标记所有AI味特征"];
     grade [label="Step 2: 分级\n红/黄/绿三级分类\n输出检测报告"];
     replace [label="Step 3: 替换方案\n对红色标记逐一提供\n至少一个替换方案"];
-    apply [label="Step 4: 应用与复查\n应用替换后重新扫描\n确认浓度下降"];
-    compare [label="Step 5: 前后对比\n输出对比报告\n量化改善幅度" shape=doublecircle];
+    apply [label="Step 4: 建议与复查\n将替换方案整理为建议报告\n复查是否仍有AI感"];
+    compare [label="Step 5: 前后对比\n输出问题清单变化" shape=doublecircle];
 
     scan -> grade -> replace -> apply -> compare;
 
-    rescan [label="浓度未下降？\n重新检查替换质量" shape=diamond];
-    apply -> rescan [label="浓度未降"];
+    rescan [label="仍有明显AI感？\n重新检查替换质量" shape=diamond];
+    apply -> rescan [label="有AI感"];
     rescan -> replace [label="调整方案"];
 }
 ```
 
 **Step 1: 全文扫描**。按检测清单（A/B/C/D/E/F 六个层面）逐条扫描全文，标记每一处匹配的 AI 味特征，记录行号和原文。
 
-**Step 2: 分级**。按量化检测规则对标记进行红/黄/绿分级。输出检测报告（格式见下方）。
+**Step 2: 分级**。按问题严重程度对标记进行红/黄/绿分级。输出检测报告（格式见下方）。
 
 **Step 3: 替换方案**。对每个红色标记，参照替换策略提供至少一个具体的替换方案。黄色标记如果累积超过 5 处，也需要提供替换方案。
 
-**Step 4: 应用与复查**。应用替换后重新跑一遍扫描，确认 AI 味浓度评分下降。如果浓度未降或反而上升，说明替换引入了新的 AI 味，需要调整方案。
+**Step 4: 建议与复查**。将替换方案整理为修订建议报告，交付写作技能执行。写作者应用替换后重新跑一遍扫描，确认文本整体 AI 感下降。如果仍有明显 AI 感，说明替换引入了新的问题，需要调整方案。
 
-**Step 5: 前后对比报告**。输出修改前后的量化对比，展示各项指标的变化。
+**Step 5: 前后对比报告**。输出修改前后的问题清单对比，展示问题是否减少、是否更自然。
 
 ### AI味检测报告格式
 
 ```
 ## AI味检测报告：[章节标题]
-
-### AI味浓度：X/10
-（0 = 纯人味，10 = 纯AI味。6分以上建议全面修订。）
 
 ### 🔴 红色标记（必须修改）
 - L[行号]：「[原文摘录]」→ [问题类型]
@@ -678,137 +590,8 @@ digraph deai_flow {
 ### 🟡 黄色标记（建议修改）
 - L[行号]：「[原文摘录]」→ [问题类型]
 
-### 🟢 绿色（已检测，在阈值内）
+### 🟢 绿色（已检测，未见明显问题）
 [无需列出具体条目，仅确认通过的检测项]
-
-### 统计面板
-| 指标 | 实测值 | 阈值 | 状态 |
-|------|--------|------|------|
-| 比喻词密度 | X/千字 | ≤2 | 🔴/🟢 |
-| 程度副词密度 | X/千字 | ≤3 | 🔴/🟢 |
-| 情感标签密度 | X/千字 | ≤1 | 🔴/🟢 |
-| 排比结构 | X处/章 | ≤2 | 🟡/🟢 |
-| 句长标准差 | X字 | ≥3 | 🔴/🟢 |
-| 通感密度 | X/千字 | ≤1 | 🟡/🟢 |
-| 感叹号密度 | X/千字 | ≤2 | 🟡/🟢 |
-| 段尾升华 | X处/章 | ≤1 | 🔴/🟢 |
-| 连字符/长破折号 | X处/章 | 0 | 🔴/🟢 |
-| Emoji 表情符号 | X处/章 | 0 | 🔴/🟢 |
-| Markdown 星号 | X处/章 | 0 | 🔴/🟢 |
-| HTML 实体字符 | X处/章 | 0 | 🔴/🟢 |
-```
-
----
-
-# 第三部分：终检
-
-本部分在**全书完成**后执行。所有计划章节已完成，每章均通过 `dp-chapter-draft` 三阶段审查，逐章连续性检查已通过。
-
-## 终检适用时机
-
-- 所有计划章节已完成，每章均通过 `dp-chapter-draft` 三阶段审查
-- 全部连续性检查通过，无未修正的 FAIL
-- `docs/dreampowers/tracking/` 目录下所有伏笔文件中的伏笔线索已回收或已明确标记为续作伏笔
-- 你准备进入打包/发布/归档阶段
-
-## 九项检查清单
-
-以下九项逐一核实。每项标记 PASS 或 FAIL，FAIL 附具体位置和问题描述。
-
-### 一、伏笔收束
-
-遍历 `docs/dreampowers/tracking/` 目录下的所有伏笔文件（`thread-*.md`），确认：
-- Claremont Coefficient 趋近 0（允许范围：-1 ~ 1）
-- 所有非续作伏笔均已回收，伏笔文件中 status 为 `resolved`
-- 续作伏笔已显式标记为 `deferred`，并记录计划回收位置
-- 不存在遗忘的伏笔（伏笔文件有记录但正文中找不到对应内容）
-
-### 二、角色弧线完整性
-
-对照 `docs/dreampowers/set/character/` 中每个主要角色的弧线设定：
-- 核心冲突是否在故事中得到回应（解决或刻意留开放结局）
-- 角色结尾状态是否与弧线方向一致
-- 配角弧线至少有收尾，不是突然消失
-
-### 三、悬念线索清点
-
-- 已计划解答的问题是否全部解答
-- 保留的悬念是否为续作服务（记录在 `deferred-threads.md` 中）
-- 不存在作者忘记回收的悬念线索
-
-### 四、标题定稿
-
-- 总标题已确定，不再是占位符，与内容/主题/基调匹配
-- 各章标题风格统一（名词短语、动词短语、或纯编号……选一种，贯穿始终）
-
-### 五、开篇回检
-
-以"已读完全书"的视角重读第一章：
-- 开篇钩子在全书语境下是否依然有效
-- 暗示、意象、措辞是否与结局形成呼应
-- 读者带着结局回看时，能否发现隐藏层次
-
-### 六、结尾兑现
-
-对照开篇的叙事承诺：
-- 核心问题是否得到回答（哪怕答案是"问题本身就是错的"）
-- 情感承诺是否兑现
-- 结尾基调是否与故事整体一致
-
-### 七、节奏全局检查
-
-- 高潮点在合理位置（通常后 1/4），张弛交替贯穿全书
-- 不存在连续 2 章以上的高/低张力区
-- 结尾后有足够消化空间（除非风格要求戛然而止）
-
-### 八、格式与元数据
-
-- 章节命名遵循 `release/chapter-NNN.md`，头部元数据完整
-- 不存在 `release/chapter-NNN-TBD.md` 文件（所有 TBD 章节均已由用户审阅并重命名为正常格式）
-- 所有章节 `review_status` 为 `approved`
-
-### 九、世界观最终校验
-
-- 设定规则在正文中均未被违反，如有演变已同步更新至 `docs/dreampowers/set/`
-
----
-
-## 最终连续性通检
-
-九项清单全部 PASS 后，运行本技能第一部分（连续性检查）对**全部章节**做一次完整通检。不是逐章，而是将所有章节作为整体跑完九个维度。
-
-目的：捕捉逐章检查时不易发现、全书尺度才暴露的不一致。
-
-全书连续性报告存储路径：`docs/dreampowers/outlines/review-consistency-final.md`
-
-通检如有 FAIL，修正后重新通检，直到全部维度 PASS。
-
----
-
-## 终检流程
-
-```dot
-digraph finishing_review {
-    rankdir=TB;
-    node [shape=box, style=rounded, fontname="PingFang SC"];
-    start [label="所有章节已完成\n逐章连续性检查已通过" shape=doublecircle];
-    checklist [label="执行九项检查清单"];
-    checklist_pass [label="全部 PASS？" shape=diamond];
-    fix_issues [label="修正问题\n（回到对应技能处理）"];
-    final_cc [label="运行连续性检查（第一部分）\n全书最终通检"];
-    cc_pass [label="九维度全部 PASS？" shape=diamond];
-    fix_cc [label="修正连续性问题\n重新通检"];
-    done [label="终检通过\n稿件可交付\n调用 skill(\"dp-tool-version\") 打 tag" shape=doublecircle];
-    start -> checklist;
-    checklist -> checklist_pass;
-    checklist_pass -> final_cc [label="全部 PASS"];
-    checklist_pass -> fix_issues [label="存在 FAIL"];
-    fix_issues -> checklist [label="修正后重检"];
-    final_cc -> cc_pass;
-    cc_pass -> done [label="全部 PASS"];
-    cc_pass -> fix_cc [label="存在 FAIL"];
-    fix_cc -> final_cc [label="修正后重检"];
-}
 ```
 
 ---
@@ -818,14 +601,11 @@ digraph finishing_review {
 | 关系 | 技能 | 说明 |
 |------|------|------|
 | 被调用 | `dp-chapter-draft` | 三阶段审查通过后，在外部审阅闭环中被调用，紧随 dp-review-reader 执行 |
-| 上游 | `dp-set-concept` | 世界规则、角色设定是连续性检查的参照基准 |
-| 上游 | `dp-set-outline` | 揭示时间表、大纲是检查揭示一致性和情节一致性的依据 |
 | 被引用 | `dp-set-style` | 风格档案是文笔修订的基线。修订和去AI味以 style.md 的七维参数和可执行指令为标尺 |
 | 协作 | `dp-review-reader` | 同在外部审阅闭环中，dp-review-reader 先执行，本技能后执行。两份报告的问题汇总后统一修改 |
 | 协作 | `dp-character-style` | 角色风格是红线。修订和去AI味不得抹杀角色的说话方式和个性。某些角色可能就是会用"文雅"的词汇，这不是AI味 |
 | 协作 | `dp-chapter-direct` | 节奏意图是红线。不得为了"顺滑"而磨平故意设计的节奏起伏。去AI味后需检查节奏意图是否受损 |
-| 协作 | `dp-chapter-adult` | 章节工作区有 `adult.md` 时，读取其内容作为第九维度（成人场景一致性）的检查基准 |
-| 下游 | `dp-tool-version` | 终检通过后，使用 `dp-tool-version` 创建 git tag 标记最终版本 |
+| 协作 | `dp-chapter-adult` | 章节文件夹有 `adult.md` 时，读取其内容作为第九维度（成人场景一致性）的检查基准 |
 
 ---
 
@@ -844,7 +624,7 @@ digraph finishing_review {
 | 把检查报告写成修改建议 ❌ | 报告只标注问题和位置，不替写作者做决策 |
 | 合并多个维度一起检查 ❌ | 每个维度独立检查、独立判定，合并会遗漏问题 |
 
-## 散文修订反模式
+## 修订建议反模式
 
 - **过度打磨直到声音消失** ❌ 修订是让文字更好，不是变成标准化的"漂亮散文"。每个故事有自己的粗糙质感
 - **情节未稳就开始打磨** ❌ 情节还可能改动时做 prose-level 修订，等于给即将拆掉的墙刷漆
@@ -861,61 +641,10 @@ digraph finishing_review {
 - **替换时引入新的AI味** ❌ 把"他感到悲伤"改成"他的心仿佛被什么东西揪住了"，恭喜，你用一个AI味替换了另一个
 - **跳过复查直接交稿** ❌ 替换后必须重新扫描。替换本身可能引入新的问题
 
-## 终检反模式
-
-- **最后一章写完就宣布完稿** ❌ 写完 ≠ 完稿，未检查的稿件里一定藏着遗忘的伏笔
-- **跳过最终通检"逐章都检查过了"** ❌ 全书尺度的不一致只有全书通检才能发现
-- **某项 FAIL 但"问题不大"就放行** ❌ 每一项 FAIL 都是读者会注意到的裂缝
-- **终检时修改正文内容** ❌ 改内容必须回到 `skill("dp-chapter-draft")` 重新审查
-- **续作伏笔不记录就留着** ❌ 未记录的 `deferred` 伏笔等于遗忘的伏笔
-- **设定和正文有出入但"以正文为准"** ❌ 正文为准可以，但设定文档必须同步更新至 `docs/dreampowers/set/`
-
----
-
-# Red Flags（STOP 信号）
-
-## 散文修订 STOP 信号
-
-| 信号 | 说明 |
-|------|------|
-| 修订后文字比原文长 | 你在扩写。回到"删 > 改 > 加"原则 |
-| 修订后句子长度趋于一致 | 你在磨平节奏。检查 `dp-chapter-direct` 意图 |
-| 修订后角色对话变"文雅" | 你在抹杀角色风格。对照 `dp-character-style` 还原 |
-| 单个段落改动超过 50% | 你在重写。回到 `skill("dp-chapter-draft")` |
-| 同一段修订超过 3 次仍不满意 | 问题可能不在文字层面，检查结构或内容 |
-
-## AI味检测 STOP 信号
-
-| 信号 | 说明 |
-|------|------|
-| AI味浓度评分 ≥8 | 文本需要大面积重写，不是修补能解决的。回到 `skill("dp-chapter-draft")` |
-| 替换后浓度反而上升 | 替换方案本身带有AI味。停下来，换思路 |
-| 单章红色标记 >15 处 | 问题是系统性的，逐条修补效率太低。考虑重写关键段落 |
-| 去味后角色风格消失 | 过度矫正。对照 `dp-character-style` 还原角色个性 |
-| 去味后节奏被磨平 | 检查 `dp-chapter-direct` 的节奏意图，还原有意设计的起伏 |
-
-## 终检 STOP 信号
-
-| 信号 | 含义 |
-|------|------|
-| CC > 2 | 仍有大量未回收伏笔，线索没有收束 |
-| 主要角色弧线未收尾 | 读者会感到被抛弃 |
-| 开篇核心问题未回答 | 故事没有兑现自己的契约 |
-| 最终通检存在 FAIL 维度 | 连续性问题未解决 |
-| 有章节 `review_status` ≠ `approved` | 稿件混入未审查内容 |
-| 存在 `release/chapter-NNN-TBD.md` 文件 | TBD 章节未经用户人工审阅 |
-| `deferred-threads.md` 条目无法与伏笔文件对应 | 续作伏笔管理混乱 |
-
-出现 Red Flag 后：暂停当前流程，判断问题层级。structure-level 交回 `skill("dp-chapter-draft")`，prose-level 回到修订第一遍重新开始。AI味浓度 ≥8 或红色标记 >15 的章节，直接交回 `skill("dp-chapter-draft")` 重新起草。终检 Red Flag 不得标记稿件为完成，修正问题后重新检查。
-
 ---
 
 # 终止状态
 
-根据调用的部分，终止状态不同：
+**连续性检查终止**：连续性报告生成并保存至 `docs/dreampowers/chapters/chapter-NNN/review.md` 后，本部分执行结束。无问题可进入下一章；有问题需修正后重检。
 
-**连续性检查终止**：连续性报告生成并保存至 `docs/dreampowers/chapters/chapter-NNN/review.md` 后，本部分执行结束。全部 PASS 可进入下一章；存在 FAIL 需修正后重检；触发 Red Flag 禁止进入下一章。
-
-**散文修订终止**：章节经过三遍通读法修订，冗余已删除，动词已强化，重复已消除，节奏自然流畅，开头结尾经过锤炼，角色风格和节奏意图均未受损。文字变少了，但读起来更好了。同时，AI味检测五步流程已完成，AI味浓度评分降至 3 分以下，所有红色标记已处理，黄色标记累积不超过 3 处，量化指标全部达标，技术语域污染已清除，角色风格和节奏意图未受损。文字读起来不再有机器味，但保留了该有的文采。
-
-**终检终止**：九项检查清单全部 PASS，全书最终连续性通检九维度全部 PASS。稿件可交付。调用 `skill("dp-tool-version")` 创建 git tag 标记最终版本。
+**修订建议终止**：章节经过三遍审查法审查，修订建议报告已产出，涵盖冗余删除建议、动词强化方案、重复消除方案、节奏调整建议、开头结尾锤炼建议，所有建议均已确认不损害角色风格和节奏意图。同时，AI味检测五步流程已完成，所有红色标记已提供替换方案。修订建议报告交付写作技能执行。

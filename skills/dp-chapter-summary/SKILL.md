@@ -1,6 +1,6 @@
 ---
 name: dp-chapter-summary
-description: Use when generating a plain-text chapter summary (≤100 Chinese characters, no formatting) from the finished chapter, for cross-chapter continuity
+description: Use when generating a plain-text chapter summary (≤150 Chinese characters, no formatting) from the finished chapter, for cross-chapter continuity
 ---
 
 <SUBAGENT-STOP>
@@ -13,11 +13,11 @@ description: Use when generating a plain-text chapter summary (≤100 Chinese ch
 
 ## 定义
 
-摘要 = **一段纯文本，100 字以内，无任何格式**。
+摘要 = **全文的高度缩写**。去掉修饰，只保留事件骨架和关键细节（关键物品、关键事件、关键态度转变）。不含对话。一段纯文本，150 字以内，无任何格式。
 
 它是跨章节连续性的唯一桥梁。未来章节的工作区通过软链接引用前序摘要，AI 在写作时只能看到这些摘要，看不到完整的前序章节正文。
 
-**原则：只记录发生了什么，不透露即将发生什么。不引用大纲。**
+**原则：只记录发生了什么，不透露即将发生什么。不引用大纲。不含对话。**
 
 ## 适用时机
 
@@ -29,13 +29,13 @@ description: Use when generating a plain-text chapter summary (≤100 Chinese ch
 
 ### 唯一输入
 
-**章节正文**—— `release/chapter-NNN.md`（已完成的章节）。
+**章节正文**—— `docs/dreampowers/release/chapter-NNN.md`（已完成的章节）。
 
 不读取 spec.md、thread-*.md、前序摘要、大纲、或任何其他文件。唯一的输入就是章节正文本身。
 
 ### 输出
 
-`docs/dreampowers/timeline/summary-NNN.md` —— 纯文本文件，内容为一段话，100 字以内。
+`docs/dreampowers/timeline/summary-NNN.md` —— 纯文本文件，格式要求见上方定义。
 
 ## 生成流程
 
@@ -45,7 +45,7 @@ description: Use when generating a plain-text chapter summary (≤100 Chinese ch
 
 ### 第二步：压缩
 
-问自己："删掉这条信息，后续章节写作会不会出问题？" 不会就删。反复执行，直到只剩下后续写作必须知道的事实骨架。
+从章节中提取事件骨架：谁（who）在哪里（where）什么时候（when）做了什么（what）、怎么做的（how）。标注关键细节：改变故事走向的物品、事件、态度转变。忽略修饰性描写、对话内容、情绪表达和章节定位词。
 
 ### 第三步：写成一段话
 
@@ -53,7 +53,7 @@ description: Use when generating a plain-text chapter summary (≤100 Chinese ch
 
 ### 第四步：检查字数和格式
 
-- 超过 100 字？继续删减，直到 100 字以内。
+- 超过 150 字？继续删减，直到 150 字以内。
 - 含有 `#`、`-`、`*`、`>`、`|`、`##`、`###`、`**`、`__` 等任何 Markdown 标记？去掉。
 - 含有标题行、列表、表格、分隔线？去掉。
 - 分了多段？合并为一段。
@@ -67,14 +67,14 @@ description: Use when generating a plain-text chapter summary (≤100 Chinese ch
 文件内容**仅包含一段纯文本**，示例：
 
 ```
-张三在废弃矿井底部发现了刻有未知文字的石碑，触碰后右手出现灼烧纹路。李四追踪到矿井入口但未进入，在外围设下监视。王五在城中得知矿区封锁的消息，决定连夜出发。石碑上的文字与第二章王五在古书中见过的符号一致，但张三不知情。章末张三仍困在矿井中，纹路开始蔓延至手腕。
+张三在废弃矿井底部发现刻有未知文字的石碑，触碰后右手出现灼烧纹路并蔓延至手腕。李四追踪到矿井入口，在外围设下监视。王五得知矿区封锁的消息后连夜出发。石碑文字与王五在古书中见过的符号一致。张三仍困在矿井中。
 ```
 
 **注意：没有标题行，没有 `# 第 NNN 章摘要`，没有任何 Markdown 格式。文件打开就是一段话。**
 
 ## 导入章节处理
 
-用户导入手写章节时，先存入 `release/chapter-NNN.md`，再按标准流程生成摘要。
+用户导入手写章节时，先存入 `docs/dreampowers/release/chapter-NNN.md`，再按标准流程生成摘要。
 
 流程与 AI 起草的章节完全相同。
 
@@ -91,13 +91,14 @@ description: Use when generating a plain-text chapter summary (≤100 Chinese ch
 
 - **引用大纲的计划信息** ❌ 摘要只记录已发生的事
 - **读取 spec.md、thread-*.md 等非章节正文的文件** ❌ 唯一输入是章节正文
-- **超过 100 字** ❌ 硬限，无例外
+- **超过 150 字** ❌ 硬限，无例外
 - **使用任何 Markdown 格式**（标题、列表、加粗、表格）❌ 纯文本，一段话
 - **分成多段** ❌ 一段话
-- **接近全章复述** ❌ 只留事实骨架
+- **接近全章复述** ❌ 只留事实框架
 - **包含作者评价或修改建议** ❌ 事实记录，不是审查报告
+- **摘要中出现角色对话或引语** ❌ 摘要是事件骨架的缩写，不是场景复述
 - **文件开头加 `# 第 NNN 章摘要` 标题** ❌ 文件内容就是一段话，无标题
 
 ## 终止状态
 
-摘要文件已保存到 `docs/dreampowers/timeline/summary-NNN.md`。文件内容是一段纯文本，100 字以内，无任何格式标记，只含关键事实。
+摘要文件已保存到 `docs/dreampowers/timeline/summary-NNN.md`。文件内容是一段纯文本，150 字以内，无任何格式标记，只含关键事实。
