@@ -91,7 +91,7 @@ Physical file-level isolation preventing AI from seeing future worldbuilding con
 - **Chapter folders** (`docs/dreampowers/chapters/chapter-NNN/`) as fully self-contained writing units
 - **Chapter folders contain**: symlinks to concepts/characters/foreshadowing threads + `spec.md` (7-section chapter spec: outline-stage framework §1-5 + Pre-Draft Gate evaluation §6 + self-contained writing blueprint §7)
 - **Iron rules** symlinked from `docs/dreampowers/tracking/iron-rules.md` into each chapter folder
-- **Previous chapter summaries** symlinked (1-3 prior chapters as needed) for continuity
+- **Previous chapter summaries** symlinked (all prior chapters) for continuity
 - **Pre-Draft Gate** reads all chapter folder materials, distills them into `spec.md` §6-7, user confirms, then **writing reads only `spec.md`**
 - **Serial chapter writing**: chapters must be written one at a time, in order
 
@@ -407,7 +407,7 @@ docs/dreampowers/                      # Independent Git repo (git init)
 │       ├── thread-*.md -> tracking/*  # Foreshadowing symlinks
 │       ├── iron-rules.md -> tracking/iron-rules.md
 │       ├── style.md -> tracking/style.md
-│       └── summary-*.md -> timeline/summary-*.md  (prev 1-3 chapters)
+│       └── summary-*.md -> timeline/summary-*.md  (all prior chapters)
 └── release/
     ├── chapter-NNN.md                 # Final versions
     └── final_report.md                # Full-book final report (dp-review-final-report output)

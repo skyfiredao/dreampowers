@@ -485,7 +485,7 @@ Claremont 系数 = status=active 的伏笔数 - status=resolved 的伏笔数
 - 伏笔链接：使用 `thread-NNN.md` 格式（如 `thread-001.md → ../../tracking/thread-001-rusty-key.md`）
 - 铁律链接：`iron-rules.md → ../../tracking/iron-rules.md`
 - 风格档案链接：`style.md → ../../tracking/style.md`
-- 前序摘要链接：**不在大纲阶段创建**。由 `dp-chapter-summary` 在每章摘要生成后为下一章文件夹创建 `summary-NNN.md → ../../timeline/summary-NNN.md`，取最近 1-3 章摘要，不足 3 章按实际数量链接。`dp-chapter-draft` 草稿预审时检查并补建缺失链接
+- 前序摘要链接：**不在大纲阶段创建**。由 `dp-chapter-summary` 在每章摘要生成后将 `docs/dreampowers/timeline/` 下所有已有摘要符号链接到下一章文件夹（`summary-NNN.md → ../../timeline/summary-NNN.md`）。`dp-chapter-draft` 草稿预审时检查并补建缺失链接
 
 ### iron-rules.md
 

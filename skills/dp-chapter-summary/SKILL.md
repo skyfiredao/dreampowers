@@ -66,9 +66,8 @@ description: Use when generating a plain-text chapter summary (≤150 Chinese ch
 
 保存摘要后，检查下一章的章节文件夹（`docs/dreampowers/chapters/chapter-{NNN+1}/`）是否已存在。若已存在：
 
-1. 确定前 1-3 章的摘要文件（`docs/dreampowers/timeline/summary-*.md`），按章节号倒序取最近 3 个（不足 3 个按实际数量）
-2. 在下一章的章节文件夹内创建符号链接：`summary-NNN.md → ../../timeline/summary-NNN.md`
-3. 如果链接已存在则跳过，不重复创建
+1. 将 `docs/dreampowers/timeline/` 下所有已存在的 `summary-*.md` 文件，在下一章的章节文件夹内创建符号链接：`summary-NNN.md → ../../timeline/summary-NNN.md`
+2. 如果链接已存在则跳过，不重复创建
 
 若下一章的章节文件夹尚不存在，跳过此步。`dp-chapter-draft` 的草稿预审阶段会在写作前检查并补建缺失的摘要链接。
 
@@ -112,4 +111,4 @@ description: Use when generating a plain-text chapter summary (≤150 Chinese ch
 
 ## 终止状态
 
-摘要文件已保存到 `docs/dreampowers/timeline/summary-NNN.md`。文件内容是一段纯文本，150 字以内，无任何格式标记，只含关键事实。若下一章文件夹已存在，前 1-3 章的摘要符号链接已创建在下一章文件夹中。
+摘要文件已保存到 `docs/dreampowers/timeline/summary-NNN.md`。文件内容是一段纯文本，150 字以内，无任何格式标记，只含关键事实。若下一章文件夹已存在，所有已有摘要的符号链接已创建在下一章文件夹中。
