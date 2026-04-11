@@ -1,6 +1,6 @@
 # Dreampowers
 
-**[English](README.md)** | **[Lite 版（适用于本地小模型）](lite/README_zh.md)**
+**[English](README.md)**
 
 一套完整的 AI 技能集，专为**中文网络小说写作**设计，基于 [oh-my-openagent](https://github.com/code-yeongyu/oh-my-openagent) 框架构建。14 个专业技能覆盖小说创作的每个阶段，从故事构思到成稿交付，核心创新在于**防止世界观信息倾泻**、**读者视角体验测试**和 **AI味检测消除**。
 

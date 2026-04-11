@@ -1,6 +1,6 @@
 # Dreampowers
 
-**[中文文档](README_zh.md)** | **[Lite Version (for local small models)](lite/README.md)**
+**[中文文档](README_zh.md)**
 
 A complete AI skill set for **Chinese novel writing**, built on the [oh-my-openagent](https://github.com/code-yeongyu/oh-my-openagent) framework. 14 specialized skills covering every stage of fiction creation, from story ideation to manuscript completion, with core innovations in **preventing worldbuilding info-dumps**, **reader-perspective testing**, and **AI-flavor elimination**.
 

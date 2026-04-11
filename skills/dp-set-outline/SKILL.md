@@ -475,7 +475,7 @@ Claremont 系数 = status=active 的伏笔数 - status=resolved 的伏笔数
 4. **`review.md`** — 章节审查报告（审查阶段产生）
 5. **`iron-rules.md`** — 指向 `docs/dreampowers/tracking/iron-rules.md` 的符号链接
 6. **`style.md`** — 指向 `docs/dreampowers/tracking/style.md` 的符号链接
-7. **`summary-*.md`** — 前序章节摘要的符号链接（由 `dp-chapter-draft` 在写作前动态创建，见下文说明）
+7. **`summary-*.md`** — 前序章节摘要的符号链接（由 `dp-chapter-summary` 在生成摘要后为下一章创建，`dp-chapter-draft` 草稿预审时检查并补建缺失链接）
 
 ### 符号链接命名规则
 
@@ -485,7 +485,7 @@ Claremont 系数 = status=active 的伏笔数 - status=resolved 的伏笔数
 - 伏笔链接：使用 `thread-NNN.md` 格式（如 `thread-001.md → ../../tracking/thread-001-rusty-key.md`）
 - 铁律链接：`iron-rules.md → ../../tracking/iron-rules.md`
 - 风格档案链接：`style.md → ../../tracking/style.md`
-- 前序摘要链接：**不在大纲阶段创建**。由 `dp-chapter-draft` 在每章写作前动态创建 `summary-NNN.md → ../../timeline/summary-NNN.md`，取 `docs/dreampowers/timeline/` 中已存在的最近 1-3 章摘要，不足 3 章按实际数量链接
+- 前序摘要链接：**不在大纲阶段创建**。由 `dp-chapter-summary` 在每章摘要生成后为下一章文件夹创建 `summary-NNN.md → ../../timeline/summary-NNN.md`，取最近 1-3 章摘要，不足 3 章按实际数量链接。`dp-chapter-draft` 草稿预审时检查并补建缺失链接
 
 ### iron-rules.md
 
@@ -530,7 +530,7 @@ Claremont 系数 = status=active 的伏笔数 - status=resolved 的伏笔数
 - [ ] 伏笔线索文件已链接
 - [ ] 角色只展示本目录内链接的时间线阶段信息
 - [ ] iron-rules.md 已链接
-- [ ] 前序章节摘要已链接（非首章，由 `dp-chapter-draft` 动态创建）
+- [ ] 前序章节摘要已链接（非首章，由 `dp-chapter-summary` 创建，`dp-chapter-draft` 草稿预审时补建缺失）
 
 ## 三、概念依赖
 - 灵力体系：无前置依赖
@@ -577,7 +577,7 @@ Claremont 系数 = status=active 的伏笔数 - status=resolved 的伏笔数
 | 揭示计划 | 同上（嵌在大纲文件内） | 同上 | 同上 |
 | 概念要点 | `*.md`（概念文件） | `docs/dreampowers/set/concept/` | 符号链接 |
 | 角色要点 | `*.md`（角色文件） | `docs/dreampowers/set/character/` | 符号链接 |
-| 前情衔接 | `summary-*.md`（前序摘要） | `docs/dreampowers/timeline/` | 符号链接（由草稿预审动态创建） |
+| 前情衔接 | `summary-*.md`（前序摘要） | `docs/dreampowers/timeline/` | 符号链接（由 `dp-chapter-summary` 创建，草稿预审补建缺失） |
 | 伏笔指令 | `thread-*.md` | `docs/dreampowers/tracking/` | 符号链接 |
 | 风格指令 | `style.md` | `docs/dreampowers/tracking/style.md` | 符号链接 |
 | 铁律提醒 | `iron-rules.md` | `docs/dreampowers/tracking/iron-rules.md` | 符号链接 |
@@ -605,7 +605,7 @@ docs/dreampowers/chapters/chapter-NNN/
 ├── style.md                       → ../../tracking/style.md
 ├── outline-*.md                   → ../../outlines/outline-*.md  (大纲符号链接，由 dp-set-outline 创建)
 ├── adult.md                       → ../../tracking/adult.md  (仅当大纲标注本章含成人场景；有此链接 = 本章含成人场景)
-├── summary-*.md                   → ../../timeline/summary-*.md  (由 dp-chapter-draft 动态创建)
+├── summary-*.md                   → ../../timeline/summary-*.md  (由 dp-chapter-summary 创建，dp-chapter-draft 补建缺失)
 ├── spirit-energy.md               → ../../set/concept/spirit-energy-system.md
 ├── sect-hierarchy.md              → ../../set/concept/sect-hierarchy.md
 ├── lin-feng-before-war.md         → ../../set/character/lin-feng/before-war.md
@@ -841,7 +841,7 @@ docs/dreampowers/
 | 上游 | `dp-set-style` | 接收风格档案（`docs/dreampowers/tracking/style.md`），创建章节文件夹时添加 `style.md` 符号链接 |
 | 上游 | `dp-tool-research` | 接收故事蓝本，可回调做考据 |
 | 下游 | `dp-chapter-draft` | 大纲确认后进入章节写作，执行五问闸门 |
-| 下游 | `dp-chapter-summary` | 章节完成后生成摘要 |
+| 下游 | `dp-chapter-summary` | 章节完成后生成摘要，并为下一章文件夹创建摘要符号链接 |
 | 协作 | `dp-review-consistency` | 检查已写章节是否违反揭示计划与铁律 |
 | 协作 | `dp-review-reader` | 按 spec.md 中的读者评估要求执行审查 |
 | 协作 | `dp-character-style` | 角色风格应反映其对主题的立场 |

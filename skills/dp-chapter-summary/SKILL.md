@@ -62,6 +62,16 @@ description: Use when generating a plain-text chapter summary (≤150 Chinese ch
 
 将纯文本保存到 `docs/dreampowers/timeline/summary-NNN.md`。文件内容就是那一段话，不加任何标题行、元数据或装饰。
 
+### 第六步：为下一章创建摘要符号链接
+
+保存摘要后，检查下一章的章节文件夹（`docs/dreampowers/chapters/chapter-{NNN+1}/`）是否已存在。若已存在：
+
+1. 确定前 1-3 章的摘要文件（`docs/dreampowers/timeline/summary-*.md`），按章节号倒序取最近 3 个（不足 3 个按实际数量）
+2. 在下一章的章节文件夹内创建符号链接：`summary-NNN.md → ../../timeline/summary-NNN.md`
+3. 如果链接已存在则跳过，不重复创建
+
+若下一章的章节文件夹尚不存在，跳过此步。`dp-chapter-draft` 的草稿预审阶段会在写作前检查并补建缺失的摘要链接。
+
 ## 摘要文件格式
 
 文件内容**仅包含一段纯文本**，示例：
@@ -83,6 +93,7 @@ description: Use when generating a plain-text chapter summary (≤150 Chinese ch
 | 关系 | 技能 | 说明 |
 |------|------|------|
 | 被调用 | `dp-chapter-draft` | 每章完成后调用本技能生成摘要 |
+| 下游 | `dp-chapter-draft` | 本技能创建摘要后，为下一章文件夹创建摘要符号链接；`dp-chapter-draft` 草稿预审时检查并补建缺失链接 |
 | 被引用 | `dp-set-outline` | 大纲中的章节计划可参考已有摘要 |
 | 被引用 | `dp-review-consistency` | 连续性检查时使用摘要核对跨章节一致性 |
 | 被引用 | `dp-review-reader` | 读者视角测试时参考已读章节的累积信息 |
@@ -101,4 +112,4 @@ description: Use when generating a plain-text chapter summary (≤150 Chinese ch
 
 ## 终止状态
 
-摘要文件已保存到 `docs/dreampowers/timeline/summary-NNN.md`。文件内容是一段纯文本，150 字以内，无任何格式标记，只含关键事实。
+摘要文件已保存到 `docs/dreampowers/timeline/summary-NNN.md`。文件内容是一段纯文本，150 字以内，无任何格式标记，只含关键事实。若下一章文件夹已存在，前 1-3 章的摘要符号链接已创建在下一章文件夹中。
