@@ -31,6 +31,15 @@ description: Use when testing chapters from a cold-reader perspective, measuring
 
 `dp-chapter-direct` 告诉你"动作场景要用短句"。本技能告诉你"读者读到这段时是否真的感到紧张"。一个是处方，一个是疗效检验。
 
+## 输入
+
+| 文件 | 来源 | 说明 |
+|------|------|------|
+| `docs/dreampowers/chapters/chapter-NNN/draft.md` | 章节文件夹 | 本章草稿（唯一的审阅对象） |
+| `docs/dreampowers/chapters/chapter-NNN/summary-*.md` | 章节文件夹内的符号链接 | 前序章节摘要，用于构建冷读者的累积认知 |
+
+**禁止读取当前章节文件夹之外的任何文件。**
+
 ## 冷读原则
 
 这是本技能区别于所有其他审查的核心机制。
@@ -159,7 +168,7 @@ description: Use when testing chapters from a cold-reader perspective, measuring
 
 ### 第一步：冷读模式
 
-切换到冷读者人格。放下所有创作者知识，仅携带截至本章之前已写章节中已展示的信息。从第一个字开始逐段阅读，记录即时感受，不做回溯修正。第一反应就是最真实的读者反应。
+切换到冷读者人格。放下所有创作者知识，前序章节信息仅从章节文件夹内的 `summary-*.md` 符号链接获取。从第一个字开始逐段阅读，记录即时感受，不做回溯修正。第一反应就是最真实的读者反应。
 
 ### 第二步：逐维度评分
 
@@ -216,7 +225,6 @@ description: Use when testing chapters from a cold-reader perspective, measuring
 1. **外部审阅闭环（必选）**：章节通过 `dp-chapter-draft` 的三阶段审查后，自动进入外部审阅闭环。本技能在闭环中**先于** `dp-review-consistency` 执行，获取读者视角的问题标记。闭环最多循环 3 次（详见 `dp-chapter-draft` 的外部审阅闭环章节）
 2. **用户明确要求**：用户说"从读者角度看看这章"、"这章读起来怎么样"、"帮我做读者体验测试"
 3. **连续写作中的定期执行**：连写N章 / 全自动模式中，每 5 章强制执行一次，防止作者视角过深
-4. **全书通读**：全书完成后整体通读测试，关注跨章节的翻页欲衰减和认知负荷累积
 
 ## 特殊场景处理
 
@@ -255,7 +263,6 @@ description: Use when testing chapters from a cold-reader perspective, measuring
 | 关系 | 技能 | 说明 |
 |------|------|------|
 | 被调用 | `dp-chapter-draft` | 三阶段审查通过后，在外部审阅闭环中被调用，先于 dp-review-consistency 执行 |
-| 被引用 | `dp-set-outline` | 按 spec.md 中的读者评估要求执行审查 |
 | 上游 | `dp-chapter-summary` | 使用前序章节摘要构建冷读者的累积认知 |
 | 协作 | `dp-review-consistency` | 同在外部审阅闭环中，本技能先执行，dp-review-consistency 后执行。两份报告的问题汇总后统一修改 |
 
