@@ -65,8 +65,10 @@ description: Use when verifying narrative consistency across chapters, revising 
 
 检查角色在章节间的状态延续：
 
-- 伤势是否延续（上章受伤，本章无恙？）
+- **对照前章摘要的 `[章末状态]` 快照**：逐一核对前章记录的每个角色的物理状态、情绪状态、位置，确认本章开头是否延续。不匹配的必须标记为 FAIL
+- 伤势是否延续（上章受伤，本章无恙？上章 `[章末状态]` 标记"重伤"的角色，本章开头是否体现伤势影响？）
 - 情绪状态是否有合理过渡（上章崩溃，本章若无其事？）
+- 位置是否连续（上章角色在 A 地，本章出现在 B 地是否有合理的位移交代？）
 - 人际关系变化是否被后续章节承认
 - 信息不对称是否维持（角色 A 知道的事，角色 B 不该知道）
 - 角色能力边界是否一致（忽强忽弱？）
@@ -198,6 +200,7 @@ CC = status=active 的伏笔数 - status=resolved 的伏笔数
 | 章节文件夹 | `docs/dreampowers/chapters/chapter-NNN/spec.md`（含写作蓝图） |
 | 章节文件夹 | `adult.md`（存在时读取，用于第九维度检查） |
 | 前序章节 | `docs/dreampowers/release/chapter-*.md`（已发布的前序章节，用于跨章对照） |
+| 前序摘要 | `docs/dreampowers/timeline/summary-*.md`（前序章节摘要，提取 `[章末状态]` 快照用于维度三角色状态追踪） |
 | 伏笔场记 | `docs/dreampowers/tracking/thread-*.md`（全部伏笔文件，用于维度七伏笔完整性检查及 Claremont 系数计算） |
 
 > **注意**：写作阶段只读 spec.md。一致性检查读 draft.md + spec.md + 前序已发布章节。读者审阅（dp-review-reader）只读 `draft.md`，不读 spec.md。
@@ -217,14 +220,15 @@ CC = status=active 的伏笔数 - status=resolved 的伏笔数
 1. 读取当前章节草稿（`docs/dreampowers/chapters/chapter-NNN/draft.md`）
 2. 读取章节文件夹中的 `spec.md`（用于对照写作蓝图与实际草稿）
 3. 读取前序已发布章节（`docs/dreampowers/release/chapter-*.md`，回溯至第 1 章）
-4. 遍历章节文件夹中链接的伏笔文件（`thread-*.md`）
-5. 如果章节文件夹存在 `adult.md`，读取其内容（用于第九维度检查）
-6. 按九个维度逐一检查，每个维度独立判定 PASS/FAIL（第九维度无 `adult.md` 时标记 N/A）
-7. 计算 Claremont 系数
-8. 检测超期伏笔
-9. 填写检查清单模板，生成连续性报告
-10. 将报告保存到 `docs/dreampowers/chapters/chapter-NNN/review.md`
-11. 如有任何维度 FAIL，明确告知写作者
+4. 读取前序章节摘要中的 `[章末状态]` 快照（`docs/dreampowers/timeline/summary-*.md`），提取最近一章各角色的物理/情绪/位置状态，用于维度三的角色状态追踪核对
+5. 遍历章节文件夹中链接的伏笔文件（`thread-*.md`）
+6. 如果章节文件夹存在 `adult.md`，读取其内容（用于第九维度检查）
+7. 按九个维度逐一检查，每个维度独立判定 PASS/FAIL（第九维度无 `adult.md` 时标记 N/A）
+8. 计算 Claremont 系数
+9. 检测超期伏笔
+10. 填写检查清单模板，生成连续性报告
+11. 将报告保存到 `docs/dreampowers/chapters/chapter-NNN/review.md`
+12. 如有任何维度 FAIL，明确告知写作者
 
 ```dot
 digraph continuity_checking {
@@ -234,6 +238,7 @@ digraph continuity_checking {
     start [label="章节通过三阶段审查"];
     read_draft [label="读取 draft.md + spec.md"];
     read_prev [label="读取前序已发布章节\n(release/chapter-*.md)"];
+    read_state [label="读取前序摘要中的\n[章末状态] 快照"];
     read_tracking [label="遍历章节文件夹中的\n伏笔文件 (thread-*.md)"];
     read_adult [label="读取 adult.md\n(章节文件夹存在时)" shape=box style="rounded,dashed"];
 
@@ -254,7 +259,7 @@ digraph continuity_checking {
     all_pass [label="报告无问题\n可进入下一章" shape=doublecircle];
     has_fail [label="报告有问题\n通知写作者修正" shape=octagon];
 
-    start -> read_draft -> read_prev -> read_tracking -> read_adult;
+    start -> read_draft -> read_prev -> read_state -> read_tracking -> read_adult;
     read_adult -> d1 -> d2 -> d3 -> d4 -> d5 -> d6 -> d7;
     d7 -> d8 -> d9;
     d9 -> cc -> report;

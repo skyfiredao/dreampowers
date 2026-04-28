@@ -1,6 +1,6 @@
 ---
 name: dp-chapter-summary
-description: Use when generating a plain-text chapter summary (≤150 Chinese characters, no formatting) from the finished chapter, for cross-chapter continuity
+description: Use when generating a plain-text chapter summary (≤150 Chinese characters + character end-of-chapter state snapshot) from the finished chapter, for cross-chapter continuity
 ---
 
 <SUBAGENT-STOP>
@@ -15,7 +15,9 @@ description: Use when generating a plain-text chapter summary (≤150 Chinese ch
 
 摘要 = **全文的高度缩写**。去掉修饰，只保留事件骨架和关键细节（关键物品、关键事件、关键态度转变）。不含对话。一段纯文本，150 字以内，无任何格式。
 
-它是跨章节连续性的唯一桥梁。未来章节的工作区通过软链接引用前序摘要，AI 在写作时只能看到这些摘要，看不到完整的前序章节正文。
+摘要之后追加一行**角色章末状态快照**，记录本章结束时各出场角色的关键状态（物理状态、情绪状态、所在位置）。状态快照以 `[章末状态]` 开头，不计入 150 字限制。
+
+它是跨章节连续性的唯一桥梁。未来章节的工作区通过软链接引用前序摘要，AI 在写作时只能看到这些摘要，看不到完整的前序章节正文。角色章末状态快照确保下一章能正确延续角色的伤势、情绪、位置等动态信息。
 
 **原则：只记录发生了什么，不透露即将发生什么。不引用大纲。不含对话。**
 
@@ -58,6 +60,19 @@ description: Use when generating a plain-text chapter summary (≤150 Chinese ch
 - 含有标题行、列表、表格、分隔线？去掉。
 - 分了多段？合并为一段。
 
+### 第四步续：生成角色章末状态快照
+
+回顾章节正文结尾处各出场角色的状态，生成一行状态快照：
+
+- 以 `[章末状态]` 开头
+- 格式：`角色名:物理状态/情绪状态/位置`，多角色用分号分隔
+- 只记录本章有实质出场的角色（被提及但未出场的不记）
+- 物理状态：健康、轻伤、重伤、昏迷、死亡等
+- 情绪状态：用一两个词概括（如 愤怒、绝望、平静、困惑）
+- 位置：当前所在地点
+- 如果某项状态本章未涉及或无变化，可省略该项
+- 状态快照不计入 150 字限制
+
 ### 第五步：保存
 
 将纯文本保存到 `docs/dreampowers/timeline/summary-NNN.md`。文件内容就是那一段话，不加任何标题行、元数据或装饰。
@@ -73,13 +88,15 @@ description: Use when generating a plain-text chapter summary (≤150 Chinese ch
 
 ## 摘要文件格式
 
-文件内容**仅包含一段纯文本**，示例：
+文件内容**仅包含一段纯文本 + 角色章末状态快照**，示例：
 
 ```
 张三在废弃矿井底部发现刻有未知文字的石碑，触碰后右手出现灼烧纹路并蔓延至手腕。李四追踪到矿井入口，在外围设下监视。王五得知矿区封锁的消息后连夜出发。石碑文字与王五在古书中见过的符号一致。张三仍困在矿井中。
+
+[章末状态] 张三:重伤·右手灼烧纹路蔓延/恐惧/矿井底部; 李四:健康/警觉/矿井入口外围; 王五:健康/焦急/赶往矿区途中
 ```
 
-**注意：没有标题行，没有 `# 第 NNN 章摘要`，没有任何 Markdown 格式。文件打开就是一段话。**
+**注意：事件段落没有标题行，没有 `# 第 NNN 章摘要`，没有任何 Markdown 格式。事件段落就是一段话。状态快照与事件段落之间空一行，以 `[章末状态]` 开头。**
 
 ## 导入章节处理
 
@@ -111,4 +128,4 @@ description: Use when generating a plain-text chapter summary (≤150 Chinese ch
 
 ## 终止状态
 
-摘要文件已保存到 `docs/dreampowers/timeline/summary-NNN.md`。文件内容是一段纯文本，150 字以内，无任何格式标记，只含关键事实。若下一章文件夹已存在，所有已有摘要的符号链接已创建在下一章文件夹中。
+摘要文件已保存到 `docs/dreampowers/timeline/summary-NNN.md`。文件内容是一段纯文本（150 字以内，只含关键事实），后接一行角色章末状态快照（`[章末状态]` 开头，记录各出场角色的物理/情绪/位置状态）。若下一章文件夹已存在，所有已有摘要的符号链接已创建在下一章文件夹中。

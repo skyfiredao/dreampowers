@@ -43,7 +43,7 @@ Dreampowers provides a disciplined, skill-driven workflow for writing Chinese fi
 | Skill | Purpose |
 |---|---|
 | `dp-chapter-draft` | Chapter writing with pre-draft gate, 3-stage review, 4 continuous writing modes, timeline execution, handwritten chapter integration, era-accurate writing (period-correct objects and perspective), outline-as-framework discipline |
-| `dp-chapter-summary` | Plain-text chapter summary (≤150 chars, no formatting) from `docs/dreampowers/release/chapter-NNN.md` only, for cross-chapter continuity |
+| `dp-chapter-summary` | Plain-text chapter summary (≤150 chars + character end-of-chapter state snapshot, no formatting) from `docs/dreampowers/release/chapter-NNN.md` only, for cross-chapter continuity |
 | `dp-chapter-direct` | Scene-type directing (action/emotional/dialogue sub-modes) + narrative pacing control, tension-relief law, camera-language description methodology |
 | `dp-chapter-adult` | **Opt-in**: Adult scene writing with sensory completeness, narrative integrity framework, two-tier system (softcore/hardcore), user-defined `adult.md` preferences |
 

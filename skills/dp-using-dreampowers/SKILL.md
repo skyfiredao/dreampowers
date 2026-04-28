@@ -250,7 +250,7 @@ docs/dreampowers/                      ← 独立 Git 仓库（git init）
 | `docs/dreampowers/tracking/thread-NNN-<name>.md` | NNN 三位数 + 描述性名称 | dp-set-outline / dp-chapter-draft | 伏笔线索文件 |
 | `docs/dreampowers/tracking/deferred-threads.md` | 固定 | dp-review-consistency | 续作保留悬念清单 |
 | `docs/dreampowers/timeline/timeline.md` | 固定 | dp-set-concept | 故事级时间线 |
-| `docs/dreampowers/timeline/summary-NNN.md` | NNN 三位数章节号 | dp-chapter-summary | 章节摘要（纯文本 ≤150 字） |
+| `docs/dreampowers/timeline/summary-NNN.md` | NNN 三位数章节号 | dp-chapter-summary | 章节摘要（纯文本 ≤150 字 + 角色章末状态快照） |
 | `docs/dreampowers/set/world/*.md` | 自由命名 | dp-set-concept | 世界逻辑与背景 |
 | `docs/dreampowers/set/concept/<name>.md` | 一概念一文件 | dp-set-concept | 概念源文件 |
 | `docs/dreampowers/set/character/<name>.md` 或 `docs/dreampowers/set/character/<name>/` | 一角色一文件或一目录 | dp-set-concept | 角色源文件 |
